@@ -1,0 +1,309 @@
+# Binary files, use those from init.rcs (just to try)
+#~ system/bin/amixer
+#~ system/bin/androidvncserver
+#~ system/bin/aplay
+#~ system/bin/appCoda7542Dec
+#~ system/bin/appCoda7542Enc
+#~ system/bin/atcmdsrv
+#~ system/bin/backup_log.sh
+#~ system/bin/bluetoothd
+#~ system/bin/cat
+#~ system/bin/chmod
+#~ system/bin/chown
+#~ system/bin/close_aud_path_fm.sh
+#~ system/bin/close_aud_path_hifi_headset.sh
+#~ system/bin/cmp
+#~ system/bin/connfwexe
+#~ system/bin/cp
+#~ system/bin/cploader
+#~ system/bin/date
+#~ system/bin/dbus-daemon
+#~ system/bin/dd
+#~ system/bin/ddexe
+#~ system/bin/df
+#~ system/bin/diag
+#~ system/bin/diag_thp_test
+#~ system/bin/diag_usb_test
+#~ system/bin/dmesg
+#~ system/bin/dttexe
+#~ system/bin/dvfm_control.sh
+#~ system/bin/eeh
+#~ system/bin/emmc_fsck
+#~ system/bin/exit_composite.sh
+#~ system/bin/FileMonitorService
+#~ system/bin/FMRadioServer
+#~ system/bin/fsck.exfat
+#~ system/bin/getevent
+#~ system/bin/getprop
+#~ system/bin/hciattach
+#~ system/bin/hd
+#~ system/bin/hostapd
+#~ system/bin/hwacc
+#~ system/bin/hw.sh
+#~ system/bin/i2cdetect
+#~ system/bin/i2cdump
+#~ system/bin/i2cget
+#~ system/bin/i2cset
+#~ system/bin/id
+#~ system/bin/ifconfig
+#~ system/bin/iftop
+#~ system/bin/insmod
+#~ system/bin/ioctl
+#~ system/bin/ionice
+#~ system/bin/kiesexe
+#~ system/bin/kill
+#~ system/bin/ln
+#~ system/bin/load_mfg_8787.sh
+#~ system/bin/load_prod_8787.sh
+#~ system/bin/log
+#~ system/bin/lpmkey
+#~ system/bin/ls
+#~ system/bin/lsmod
+#~ system/bin/lsof
+#~ system/bin/macloader
+#~ system/bin/MarvellWirelessDaemon
+#~ system/bin/md5
+#~ system/bin/mfgloader
+#~ system/bin/mkdir
+#~ system/bin/mkfs.exfat
+#~ system/bin/mlanutl
+#~ system/bin/mount
+#~ system/bin/mrvl_dut
+#~ system/bin/msocket_testport
+#~ system/bin/mv
+#~ system/bin/nandread
+#~ system/bin/netstat
+#~ system/bin/newfs_msdos
+#~ system/bin/notify
+#~ system/bin/npsmobex
+#~ system/bin/nvm
+#~ system/bin/open_aud_path_fm_headset.sh
+#~ system/bin/open_aud_path_fm_speaker.sh
+#~ system/bin/open_aud_path_hifi_headset.sh
+#~ system/bin/p2p_supplicant
+#~ system/bin/pand
+#~ system/bin/playlpm
+#~ system/bin/powerdaemon
+#~ system/bin/poweroff_charging_power_save.sh
+#~ system/bin/ppd_cmd
+#~ system/bin/printenv
+#~ system/bin/ps
+#~ system/bin/reboot
+#~ system/bin/rem.sh
+#~ system/bin/renice
+#~ system/bin/rfkill
+#~ system/bin/rm
+#~ system/bin/rmdir
+#~ system/bin/rmmod
+#~ system/bin/robust_btc.conf
+#~ system/bin/route
+#~ system/bin/run_composite.sh
+#~ system/bin/samsungpowersoundplay
+#~ system/bin/schedtop
+#~ system/bin/sdptool
+#~ system/bin/sendevent
+#~ system/bin/sensord
+#~ system/bin/serial_cfun0
+#~ system/bin/serial_client
+#~ system/bin/serial_client_test
+#~ system/bin/setconsole
+#~ system/bin/setprop
+#~ system/bin/setup_fs
+#~ system/bin/sh
+#~ system/bin/simal
+#~ system/bin/sleep
+#~ system/bin/smd
+#~ system/bin/smdexe
+#~ system/bin/start
+#~ system/bin/stop
+#~ system/bin/sync
+#~ system/bin/tel_launch_no_gui.sh
+#~ system/bin/tel_launch.sh
+#~ system/bin/telmon
+#~ system/bin/top
+#~ system/bin/touch
+#~ system/bin/umount
+#~ system/bin/unload_8787.sh
+#~ system/bin/uptime
+#~ system/bin/usr_path_ctrl
+#~ system/bin/vcm
+#~ system/bin/vmstat
+#~ system/bin/vt_test
+#~ system/bin/watchprops
+#~ system/bin/wipe
+#~ system/bin/wlandutservice
+
+# Graphics
+system/lib/egl/egl.cfg
+system/lib/egl/libEGL_MRVL.so
+system/lib/egl/libGLESv1_CM_MRVL.so
+system/lib/egl/libGLESv2_MRVL.so
+system/lib/libGAL.so
+
+# Marvell Audio
+system/lib/hw/audio_path.adda.mrvl.so
+system/lib/hw/audio_path.fm.mrvl.so
+system/lib/hw/audio_path.hifi.mrvl.so
+system/lib/hw/audio_path.vc.mrvl.so
+system/lib/hw/audio_path.voip.mrvl.so
+system/lib/hw/audio_path.vt.mrvl.so
+system/lib/hw/audio_policy.mrvl.so
+system/lib/hw/audio.primary.mrvl.so
+system/lib/libacoustic.so
+system/lib/libaudiodebugtool.so
+system/lib/libaudiosa.so
+system/lib/soundfx/libmrvlpreprocessing.so
+
+# More Marvell stuff:
+system/lib/libmarvell-nvaccessor.so
+system/lib/libmarvell-ril.so
+system/lib/libMarvellWireless.so
+system/lib/libMrvlOmx.so
+# Buffer management
+system/lib/libphycontmem.so
+# Unknown
+system/lib/liblvvewrapper.so
+system/lib/libmtelif.so
+system/lib/libnvaccessor.so
+system/lib/libsecnativefeature.so
+system/lib/libsocketsvr.so
+
+# Camera
+system/cameradata/datapattern_420sp.yuv
+system/cameradata/datapattern_front_420sp.yuv
+system/etc/ov5647_scene_tuning.data
+system/lib/hw/camera.mrvl.so
+system/lib/libcameraengine.so
+
+# Media codecs - nice to have (needed?)
+system/lib/libcoda7542hal.so
+system/lib/libcoda7542.so
+system/lib/libcodecaacdec.so
+system/lib/libcodecaacenc.so
+system/lib/libcodecamrnbdec.so
+system/lib/libcodecamrnbenc.so
+system/lib/libcodecamrwbdec.so
+system/lib/libcodecamrwbenc.so
+system/lib/libcodeccoda7542dec.so
+system/lib/libcodeccoda7542enc.so
+system/lib/libcodech263dec.so
+system/lib/libcodech263enc.so
+system/lib/libcodech264dec.so
+system/lib/libcodech264enc.so
+system/lib/libcodecjpegdec.so
+system/lib/libcodecjpegenc.so
+system/lib/libcodecmp3dec.so
+system/lib/libcodecmpeg2dec.so
+system/lib/libcodecmpeg4dec.so
+system/lib/libcodecmpeg4enc.so
+system/lib/libcodecpngdec.so
+system/lib/libcodecwmadec.so
+system/lib/libcodecwmvdec.so
+system/lib/libmiscgen.so
+
+# Marvell Sensors
+system/lib/hw/sensors.mrvl.so
+
+# CPU Freq
+system/lib/libcpufreqinterface.so
+system/lib/libcpufreq.so
+
+# CSR: certificate signing request?
+system/lib/hw/csr.cpd.so
+
+# GPS
+system/lib/hw/gps.default.so
+system/etc/AGPS_CA.pem
+
+# Marvell Firmware
+system/etc/firmware/mrvl/reg_alpha2
+system/etc/firmware/mrvl/sd8787_uapsta.bin
+system/etc/firmware/mrvl/w8787_wlan_SDIO_bt_SDIO.bin
+system/etc/firmware/mrvl/WlanCalData_ext.conf
+system/etc/firmware/mrvl/WlanCalData_ext.conf_0
+system/vendor/firmware/libpn547_fw_eng.so
+system/vendor/firmware/libpn547_fw_platform.so
+system/vendor/firmware/libpn547_fw.so
+
+# NFC (not needed?)
+system/lib/hw/nfc.pxa988.so
+
+# Might not need this
+system/lib/libstagefrighthw.so
+system/lib/libsraxxd.so
+system/lib/libsrvxxd.so
+system/lib/libsimal.so
+system/lib/libserialport.so
+system/lib/libceu.so
+system/lib/libgcu.so
+system/lib/libgpucsc.so
+system/lib/lib_gsd5t_mode7.so
+system/lib/libbz.so
+system/lib/libaah_rtp.so
+# Could be a sensor
+system/lib/libacm.so
+system/lib/libAndroidEvent.so
+system/lib/libHSV.so
+system/lib/libHWComposerGC.so
+system/lib/libionhelper.so
+system/lib/libippimgp.so
+system/lib/libippsp.so
+system/lib/libippvp.so
+system/lib/libOrgan.so
+system/lib/libpmemhelper.so
+# Probably related to marvell powerdaemon files in etc
+system/lib/libPowerSetting.so
+system/lib/libparseTim.so
+system/lib/libSDRMInvLH.so
+# Gnome chemistry utils???
+system/lib/libgcu.so
+
+# Display
+system/lib/hw/gralloc.mrvl.so
+system/lib/hw/hwcomposer.mrvl.so
+system/lib/hw/lights.mrvl.so
+system/lib/libHWComposerGC.so
+
+# PowerDaemon - don't know what it does exactly - needed?
+#~ system/lib/PowerDaemon/delegate_cpu.so
+#~ system/lib/PowerDaemon/delegate_shcmd.so
+#~ system/lib/PowerDaemon/plugin_coda.so
+#~ system/lib/PowerDaemon/delegate_ddr.so
+#~ system/lib/PowerDaemon/plugin_android.so
+#~ system/lib/PowerDaemon/plugin_input.so
+#~ system/lib/PowerDaemon/delegate_gpu.so
+#~ system/lib/PowerDaemon/plugin_camera.so
+#~ system/lib/PowerDaemon/plugin_thermal.so
+
+# DRM - needed?
+system/lib/libdivxdrm.so
+system/lib/drm/libdivxplugin.so
+system/lib/drm/libdrmwvmplugin.so
+system/lib/drm/libomaplugin.so
+system/lib/drm/libplayreadyplugin.so
+system/lib/libomadrm.so
+system/lib/libWVStreamControlAPI_L3.so
+system/lib/libwvdrm_L3.so
+
+#~ # Bluetooth - needed?
+#~ system/lib/bluez-plugin/audio.so
+#~ system/lib/bluez-plugin/bluetooth-health.so
+#~ system/lib/bluez-plugin/input.so
+#~ system/lib/bluez-plugin/network.so
+#~ system/lib/libbluetoothd.so
+#~ system/lib/libbluetooth.so
+
+#~ # Face recognition (?) - needed?
+#~ system/lib/libarccamera.so
+#~ system/lib/libarcsoft_blink_detection.so
+#~ system/lib/libarcsoft_detection_base.so
+#~ system/lib/libarcsoft_face_tracking.so
+#~ system/lib/libarcsoft_smile_detection.so
+#~ system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/left_eye-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin
+#~ system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/nose_base-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin
+#~ system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/right_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-2/full_model.bin
+#~ system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-r0-ri30.4a-v24/full_model.bin
+#~ system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rp30-ri30.5-v24/full_model.bin
+#~ system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rn30-ri30.5-v24/full_model.bin
+#~ system/vendor/pittpatt/models/recognition/face.face.y0-y0-22-b-N/full_model.bin
+

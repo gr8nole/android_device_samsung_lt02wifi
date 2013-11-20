@@ -1,0 +1,83 @@
+/dev/snd/* 0660 system audio
+/dev/citty* 0660 radio system
+/dev/ccichar 0640 radio radio
+/dev/ttyS2 0600 system system
+/dev/video0 0660 media camera
+/dev/media0 0660 root camera
+/dev/uio1   0660 root camera
+/dev/video5 0660 root camera
+/dev/video6 0660 root camera
+/dev/video7 0660 root camera
+/dev/video8 0660 root camera
+/dev/v4l-subdev0 0660 root camera
+/dev/v4l-subdev1 0660 root camera
+/dev/v4l-subdev2 0660 root camera
+/dev/v4l-subdev3 0660 root camera
+/dev/cctdatadev0 0640 system system
+/dev/cctdatadev1 0660 radio bluetooth
+/dev/cidatatty* 0640 radio radio
+/dev/cidatatty1 0660 radio bluetooth
+/dev/bmm 0660 media media
+/dev/ire 0660 system video
+/dev/graphics/fb0 0666 system media
+/dev/graphics/galcore 0666 system media
+/dev/pmem 0666 media system
+/dev/pmem_adsp 0660 system camera
+/dev/pmem_wc 0660 system camera
+/dev/ion 0666 system graphics
+/dev/cnm 0660 media media
+/dev/uio0 0666 media media
+/dev/rfkill 0660 system wifi
+/dev/video1 0660 system system
+/dev/geu 0660 media system
+/dev/mdtv* 0660 system system
+/dev/ttyS1 0660 system system
+/dev/radio0 0660 system system
+/sys/devices/virtual/input/input*   active    0660  root   input
+/sys/devices/virtual/input/input*   interval  0660  root   input
+/sys/devices/virtual/input/input*   wake      0220  root   input
+/sys/devices/virtual/input/input*   position  0660  root   input
+/dev/input/event* 0666 root input
+/dev/alarm-poweroff 0444 system system
+# telephony
+/dev/cctdev* 0660 system system
+/dev/msocket 0666 system system
+/dev/msocket_dump 0666 system system
+/dev/diag_dump 0666 system system
+/dev/ccidatastub 0660 system system
+/dev/seh 0660 system system
+/dev/diagdatastub 0660 system system
+/dev/ttymodem* 0660 system system
+/dev/ttydiag* 0660 system system
+# MRD partition
+/dev/block/mmcblk0p1 0660 system system
+# MRD backup partition
+/dev/block/mmcblk0p2 0660 system system
+/dev/cpmem 0660 system root
+# sysscope
+/dev/block/mmcblk0p7 0660 system system
+# radio partition
+/dev/block/mmcblk0p8 0600 system root
+/dev/mpu 0660 system system
+/dev/mpuirq 0660 system system
+/dev/accelirq 0660 system system
+/dev/timerirq 0660 system system
+# gpu customize frequency
+/sys/devices/platform/galcore/gpu/gpu0/gpufreq userspace/customize_rate 0644 system root
+
+# cpufreq customize governor parameters
+## ondemand
+/sys/devices/system/cpu/cpufreq ondemand/sampling_rate 0644 system root
+/sys/devices/system/cpu/cpufreq ondemand/up_threshold 0644 system root
+/sys/devices/system/cpu/cpufreq ondemand/powersave_bias 0644 system root
+/sys/devices/system/cpu/cpufreq ondemand/ignore_nice_load 0644 system root
+/sys/devices/system/cpu/cpufreq ondemand/io_is_busy 0644 system root
+/sys/devices/system/cpu/cpufreq ondemand/sampling_down_factor 0644 system root
+
+## conservative
+/sys/devices/system/cpu/cpufreq conservative/down_threshold 0644 system root
+/sys/devices/system/cpu/cpufreq conservative/freq_step 0644 system root
+/sys/devices/system/cpu/cpufreq conservative/sampling_rate 0644 system root
+/sys/devices/system/cpu/cpufreq conservative/up_threshold 0644 system root
+/sys/devices/system/cpu/cpufreq conservative/ignore_nice_load 0644 system root
+/sys/devices/system/cpu/cpufreq conservative/sampling_down_factor 0644 system root

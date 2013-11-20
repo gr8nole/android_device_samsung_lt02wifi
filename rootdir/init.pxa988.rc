@@ -1,0 +1,756 @@
+import init.pxa988.usb.rc
+# Phone only:
+#~ import init.pxa988.tel.rc
+
+on early-init
+
+# create mountpoints
+    mkdir /mnt 0775 root system
+
+    export EXTERNAL_STORAGE /storage/sdcard0
+    mkdir /storage 0550 system sdcard_r
+    mkdir /storage/sdcard0 0000 system system
+    symlink /storage/sdcard0 /sdcard
+    symlink /storage/sdcard0 /mnt/sdcard
+# map "real" external storages paths also in same way. backwards compatibility.
+    export SECONDARY_STORAGE /storage/sdcard1:/mnt/extSdCard
+    mkdir /storage/sdcard1 0000 system system
+    symlink /storage/sdcard1 /mnt/extSdCard
+
+    mkdir /efs 0771 radio system
+    
+
+on init
+    loglevel 8
+    mkdir /preload 0771 system system
+    mkdir /NVM 0775 system system
+    
+    setprop ro.board.platform mrvl
+
+# For debugging:
+    setprop ro.secure=0
+    setprop ro.adb.secure=0
+    setprop ro.debuggable=1
+
+    write /proc/sys/vm/legacy_va_layout 1
+    
+# Right now vendor lives on the same filesystem as system,
+# but someday that may change.
+    symlink /data/vendor /vendor
+
+    # for control LCD backlight
+    chown system system /sys/class/backlight/emei-bl/brightness
+    chmod 0644 /sys/class/backlight/backlight-0/brightness
+
+    chown system system /sys/class/backlight/panel/max_brightness
+    chmod 0660 /sys/class/backlight/panel/max_brightness
+    chown system system /sys/class/backlight/panel/brightness
+    chmod 0660 /sys/class/backlight/panel/brightness
+    chown system system /sys/class/timed_output/vibrator/enable
+    chown system system /sys/class/backlight/panel/auto_brightness
+
+    # for KeyLED	
+    chown system system /sys/class/sec/sec_touchkey/brightness
+    chmod 0664 /sys/class/sec/sec_touchkey/brightness
+    
+    # for TSP cmd	
+    chown system system /sys/class/sec/tsp/cmd
+    chmod 0664 /sys/class/sec/tsp/cmd
+
+    #mdnie
+    chown system system /sys/class/lcd/panel/tuning
+    chmod 0644 /sys/class/backlight/lcd/panel/tuning
+
+    chown system media_rw /sys/class/mdnie/mdnie/scenario
+    chmod 0664 /sys/class/mdnie/mdnie/scenario
+    chown system media_rw /sys/class/mdnie/mdnie/outdoor
+    chmod 0664 /sys/class/mdnie/mdnie/outdoor
+    chown system system /sys/class/mdnie/mdnie/negative
+    chmod 0664 /sys/class/mdnie/mdnie/negative
+    chown system system /sys/class/mdnie/mdnie/cabc
+    chmod 0664 /sys/class/mdnie/mdnie/cabc
+    
+    # for sd8xxx wifi and bluetooth power
+    chown system system /sys/class/rfkill/rfkill0/state
+    chown system system /sys/class/rfkill/rfkill1/state
+
+    #cpu
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/power/cpufreq_table
+
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+    chmod 0660 /sys/power/cpufreq_table
+
+    #hotplug
+    chown system system /sys/devices/system/cpu/hotplug/bound_freq
+    chown system system /sys/devices/system/cpu/hotplug/load_h0
+    chown system system /sys/devices/system/cpu/hotplug/load_l1
+    chown system system /sys/devices/system/cpu/hotplug/lock
+    chown system system /sys/devices/system/cpu/cpu1/online
+
+    chmod 0644 /sys/devices/system/cpu/hotplug/bound_freq
+    chmod 0644 /sys/devices/system/cpu/hotplug/load_h0
+    chmod 0644 /sys/devices/system/cpu/hotplug/load_l1
+    chmod 0644 /sys/devices/system/cpu/hotplug/lock
+    chmod 0644 /sys/devices/system/cpu/cpu1/online
+
+    #ddr
+    chown system system /sys/class/devfreq/devfreq-ddr/polling_interval
+    chown system system /sys/class/devfreq/devfreq-ddr/min_freq
+    chown system system /sys/class/devfreq/devfreq-ddr/max_freq
+    chown system system /sys/class/devfreq/devfreq-ddr/governor
+    chown system system /sys/class/devfreq/devfreq-ddr/cur_freq
+
+    #Battery
+    chown system radio /sys/class/power_supply/battery/batt_reset_soc
+    chown system radio /sys/class/power_supply/battery/update
+    chown system radio /sys/class/power_supply/battery/siop_activated
+    chown system radio /sys/class/power_supply/battery/siop_level
+
+    #vpu
+    chown system system /sys/class/devfreq/devfreq-vpu/userspace/set_freq
+    chown system system /sys/class/devfreq/devfreq-vpu/min_freq
+    chown system system /sys/class/devfreq/devfreq-vpu/max_freq
+
+    #keypad wakeup source
+    chown system system /sys/devices/platform/pxa27x-keypad/power/wakeup
+    chmod 664 /sys/devices/platform/pxa27x-keypad/power/wakeup
+
+    #pm800_headset source
+    chown system system /proc/driver/pm800_headset
+
+    #lcd for dip channel
+    chmod 664 /sys/devices/platform/pxa168-fb.0/lcd    
+    chown system system /sys/devices/platform/pxa168-fb.0/lcd
+
+    chmod 440 /sys/devices/platform/pxa168-fb.0/power/runtime_status
+    chown radio system /sys/devices/platform/pxa168-fb.0/power/runtime_status
+
+    #cpu&ddr for dip channel
+    chmod 664 /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/min_freq
+    chmod 664 /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/max_freq   
+    chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/min_freq
+    chown system system /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/min_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
+    #pm runtime
+    chown system system /sys/bus/i2c/devices/1-0020/power/control
+    chown system system /sys/bus/i2c/devices/4-0020/power/control
+    chown system system /sys/devices/platform/pxa168-fb.0/power/control
+    chown system system /sys/devices/platform/pxa168-fb.1/power/control
+    chown system system /sys/devices/platform/mrvl8xxx_fm.0/power/control
+    chown system system /sys/devices/platform/Sec_BattMonitor/power/control
+    #autosleep
+    chown system system /sys/power/autosleep
+
+    chown system system /sys/class/power_supply/battery/device/calibration
+    chown system system /proc/driver/sirf
+
+    chown system system /sys/class/graphics/fb0/device/vsync
+    chmod 0660 /sys/class/graphics/fb0/device/vsync
+
+    #GSSP device
+    chown system system /proc/driver/pcm_mfp
+    chmod 0666 /proc/driver/pcm_mfp
+
+    # master/slave
+    chown system system /proc/driver/ssp_master
+    chmod 0666 /proc/driver/ssp_master
+
+    chown system system /proc/driver/gssp_master
+    chmod 0666 /proc/driver/gssp_master
+
+    #set ap as master, codec/BT as slave
+    setprop persist.audio.apmaster 1
+    setprop persist.audio.gsspmaster 1
+    setprop persist.audio.codecmaster 0
+    setprop persist.bt.pcmmaster 0
+
+    #enable DRM service
+    setprop drm.service.enabled true
+    #setprop battery.fake_ac 1
+
+    #TSP resume/suspend control
+    write /sys/bus/i2c/devices/1-0020/power/control on
+    write /sys/bus/i2c/devices/4-0020/power/control on
+
+    chown system system /sys/bus/i2c/drivers/fsa9480/7-0025/syssleep
+    chmod 0664 /sys/bus/i2c/drivers/fsa9480/7-0025/syssleep
+
+on fs
+        # Mount /system rw first to give the filesystem a chance to save a checkpoint
+    #mount ext4 /dev/block/mmcblk0p14 /system ordered nodelalloc
+    #mount ext4 /dev/block/mmcblk0p14 /system ro remount
+
+    # for e2fsck bad block of /data partition before mount
+    mount_all /fstab.pxa988
+
+    #mount ext4 /dev/block/mmcblk0p15 /cache
+
+    mount debugfs debugfs /sys/kernel/debug
+
+on post-fs
+    insmod /system/lib/modules/galcore.ko registerMemBase=0xc0400000 irqLine=40 contiguousSize=0x4000000
+    insmod /system/lib/modules/geu.ko
+
+#    insmod /system/lib/modules/blcr_imports.ko
+#    insmod /system/lib/modules/blcr.ko
+
+    # ko files for exfat
+    insmod /system/lib/modules/exfat_core.ko
+    insmod /system/lib/modules/exfat_fs.ko
+
+    chown system system /sys/devices/platform/galcore/power/control
+    #gpu
+    chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_cur_governor
+    chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_min_freq
+    chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_max_freq
+
+    chown radio system /efs
+    chmod 0771 /efs
+    
+    symlink /dev/block/mmcblk0p7 /dev/block/param
+
+on post-fs-data
+    setprop vold.post_fs_data_done 1
+    setprop wifi.interface wlan0
+    setprop wifidirect.interface p2p0
+
+    mkdir /data/misc/bluetoothd 0770 bluetooth bluetooth
+
+    # create folder to save wifi/bt config files with mac address, and calibrate files
+    mkdir /data/misc/wireless 0771 system system
+
+    # create filesystem for wifi & dhcp
+    mkdir /data/misc/wifi 0771 wifi system
+    mkdir /data/misc/wifi/sockets 0771 wifi wifi
+    mkdir /data/misc/wifi/wapi_certs 0775 wifi wifi
+    mkdir /data/misc/dhcp 0775 dhcp dhcp
+    mkdir /efs/wifi 0775 radio system
+    chown dhcp dhcp /data/misc/dhcp
+    chown system system /efs/wifi/.mac.info
+    chmod 0664 /efs/wifi/.mac.info
+    chmod 0664 /efs/bluetooth/bt_addr
+
+    # for blcr
+    #mkdir /data/blcr 0775 system system
+    # marvell_dut
+    insmod /system/lib/modules/mlan.ko
+
+# MTP permission
+	chmod 0660 /dev/usb_mtp_gadget
+	chown system system /dev/usb_mtp_gadget
+
+# Create radio folder for IMEI file
+    mkdir /data/misc/radio 0775 radio system
+    chmod 0775 /data/misc/radio
+    
+    mkdir /efs/imei 0775 system system
+    chmod 0775 /efs/imei
+
+# For marvell models FactoryApp foler permission
+    mkdir /efs/FactoryApp 0775 system system
+    chmod 0775 /efs/FactoryApp
+
+
+    mkdir /efs/bluetooth 0775 radio system
+
+    mkdir /data/log 0775 system log
+    chown system log /data/log
+
+    chmod 0775 /data/log
+    chmod 0775 /data/anr
+
+
+    # save OMA DB, when upgrading from GB to ICS    
+    mkdir /data/system/databases 0771 system system
+    copy /data/data/com.sec.android.providers.drm/databases/drmdatabase.db /data/system/databases/drmdatabase.db
+    chown system system /data/system/databases/drmdatabase.db
+    chmod 0774 /data/system/databases/drmdatabase.db	
+    
+    # DRM directory creation
+    mkdir /system/etc/security/.drm 0775
+    chown root root /system/etc/security/.drm
+    chmod 0775 /system/etc/security/.drm
+
+    # Added for Playready DRM Support
+    mkdir /data/data/.drm 0775
+    chown drm system /data/data/.drm
+    chmod 0775 /data/data/.drm
+    mkdir /data/data/.drm/.playready 0775
+    chown drm system /data/data/.drm/.playready
+    chmod 0775 /data/data/.drm/.playready
+
+    # Added drm folder to copy drm plugins
+    mkdir /system/lib/drm 0775
+    chown root root /system/lib/drm
+    chmod 0775 /system/lib/drm
+
+    # DivX DRM
+    mkdir /efs/.files 0775
+    mkdir /efs/.files/.dx1 0775
+    mkdir /efs/.files/.dm33 0775
+    mkdir /efs/.files/.mp301 0775
+    chown media system /efs/.files/.dx1
+    chown media system /efs/.files/.dm33
+    chown media system /efs/.files/.mp301
+    chmod 0775 /efs/.files/.dx1
+    chmod 0775 /efs/.files/.dm33
+    chmod 0775 /efs/.files/.mp301
+
+   # sensor
+    mkdir /data/misc/sensor 0775 system system
+    mkdir /data/tmp 0775 system system
+    mkdir /data/etc/sensor 0777 system system
+
+on boot
+# SISO-ANDR-PERF :: START Changing governor to performance and scheduler to noop once boot is started
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor	performance
+    write /sys/block/mmcblk0/queue/scheduler noop
+# SISO-ANDR-PERF :: END HERE
+
+    setprop ro.media.gst.enabled 1
+    setprop service.camera.af 1
+
+    # enable bluetooth dial-up network
+    setprop  ro.bluetooth.dun true
+    # NFC
+    setprop ro.nfc.port "I2C"
+    chmod 0777 /dev/pn547
+    chown nfc nfc /dev/pn547
+
+    chown system system /sys/power/sysoff
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+
+# Permissions for bluetooth
+    setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"   
+    chown bluetooth bluetooth ro.bt.bdaddr_path 
+
+# Audio (Earjack) KSND
+    chown system radio /sys/class/audio/earjack/select_jack
+    chown system radio /sys/class/audio/earjack/key_state
+    chown system radio /sys/class/audio/earjack/state
+    chown media system /sys/class/audio/earjack/reselect_jack
+
+#SENSOR
+#grip
+    chown radio system /sys/class/input/input7/enable
+    chmod 0664 /sys/class/input/input5/enable
+
+    chown system radio /sys/class/sensors/grip_sensor/calibration
+    chown system radio /sys/class/sensors/grip_sensor/check_crcs
+    chown system radio /sys/class/sensors/grip_sensor/name
+    chown system radio /sys/class/sensors/grip_sensor/raw_data
+    chown system radio /sys/class/sensors/grip_sensor/threshold
+    chown system radio /sys/class/sensors/grip_sensor/onoff
+    chown system radio /sys/class/sensors/grip_sensor/vendor
+
+    chmod 0664 /sys/class/sensors/grip_sensor/calibration
+    chmod 0664 /sys/class/sensors/grip_sensor/check_crcs
+    chmod 0444 /sys/class/sensors/grip_sensor/name
+    chmod 0664 /sys/class/sensors/grip_sensor/raw_data
+    chmod 0664 /sys/class/sensors/grip_sensor/threshold
+    chmod 0664 /sys/class/sensors/grip_sensor/onoff
+    chmod 0444 /sys/class/sensors/grip_sensor/vendor
+
+#proximity/lightsensor
+    chown system radio /sys/class/input/input5/enable
+    chmod 0664 /sys/class/input/input5/enable
+    chown system radio /sys/class/input/input6/enable
+    chmod 0664 /sys/class/input/input6/enable
+
+    chown system radio /sys/class/sensors/proximity_sensor/enable
+    chown system radio /sys/class/sensors/proximity_sensor/state
+    chown system radio /sys/class/sensors/proximity_sensor/prox_avg
+    chown system radio /sys/class/sensors/proximity_sensor/prox_cal
+    chown system radio /sys/class/sensors/proximity_sensor/prox_cal2
+    chown system radio /sys/class/sensors/proximity_sensor/prox_offset_pass
+    chown system radio /sys/class/sensors/proximity_sensor/prox_thresh
+    chown system radio /sys/class/sensors/proximity_sensor/raw_data
+    chown system radio /sys/class/sensors/proximity_sensor/name
+    chown system radio /sys/class/sensors/proximity_sensor/vendor
+    chmod 0664 /sys/class/sensors/proximity_sensor/enable
+    chmod 0664 /sys/class/sensors/proximity_sensor/state
+    chmod 0664 /sys/class/sensors/proximity_sensor/prox_avg
+    chmod 0664 /sys/class/sensors/proximity_sensor/prox_cal
+    chmod 0664 /sys/class/sensors/proximity_sensor/prox_cal2
+    chmod 0664 /sys/class/sensors/proximity_sensor/prox_offset_pass
+    chmod 0664 /sys/class/sensors/proximity_sensor/prox_thresh
+    chmod 0664 /sys/class/sensors/proximity_sensor/raw_data
+    chmod 0664 /sys/class/sensors/proximity_sensor/name
+
+    chown system radio /sys/class/sensors/light_sensor/name
+    chown system radio /sys/class/sensors/light_sensor/vendor
+    chown system radio /sys/class/sensors/light_sensor/raw_data
+    chown system radio /sys/class/sensors/light_sensor/lux
+
+    chmod 0664 /sys/class/sensors/light_sensor/name
+    chmod 0664 /sys/class/sensors/light_sensor/vendor
+    chmod 0664 /sys/class/sensors/light_sensor/raw_data
+    chmod 0664 /sys/class/sensors/light_sensor/lux
+
+    chown system radio /efs/prox_cal 
+    chmod 0666 /efs/prox_cal
+
+#magnetic sensor
+    chown system radio /sys/class/input/input4/chip_id
+    chown system radio /sys/class/input/input4/raw_data
+    chown system radio /sys/class/input/input4/op_mode
+    chown system radio /sys/class/input/input4/selftest
+    chown system radio /sys/class/input/input4/value
+    chown system radio /sys/class/input/input4/enable
+    chown system radio /sys/class/input/input4/delay
+    chown system radio /sys/class/input/input4/rept_xy
+    chown system radio /sys/class/input/input4/rept_z
+    chown system radio /sys/class/input/input4/odr
+
+    chmod 0664 /sys/class/input/input4/chip_id
+    chmod 0664 /sys/class/input/input4/raw_data
+    chmod 0664 /sys/class/input/input4/op_mode
+    chmod 0664 /sys/class/input/input4/selftest
+    chmod 0664 /sys/class/input/input4/value
+
+    chown system radio /sys/class/sensors/magnetic_sensor/chip_id
+    chown system radio /sys/class/sensors/magnetic_sensor/raw_data
+    chown system radio /sys/class/sensors/magnetic_sensor/op_mode
+    chown system radio /sys/class/sensors/magnetic_sensor/selftest
+    chown system radio /sys/class/sensors/magnetic_sensor/value
+    chown system radio /sys/class/sensors/magnetic_sensor/enable
+    chown system radio /sys/class/sensors/magnetic_sensor/delay
+    chown system radio /sys/class/sensors/magnetic_sensor/name
+    chown system radio /sys/class/sensors/magnetic_sensor/vendor
+
+    chmod 0664 /sys/class/sensors/magnetic_sensor/chip_id
+    chmod 0664 /sys/class/sensors/magnetic_sensor/raw_data
+    chmod 0664 /sys/class/sensors/magnetic_sensor/selftest
+    chmod 0664 /sys/class/sensors/magnetic_sensor/value
+    chmod 0444 /sys/class/sensors/magnetic_sensor/name
+    chmod 0444 /sys/class/sensors/magnetic_sensor/vendor
+
+#acc sensor
+    chown system radio /sys/class/input/input3/raw_data
+    chown system radio /sys/class/input/input3/value
+    chown system radio /sys/class/input/input3/fast_calibration_x
+    chown system radio /sys/class/input/input3/fast_calibration_y
+    chown system radio /sys/class/input/input3/fast_calibration_z
+    chown system radio /sys/class/input/input3/eeprom_writing
+    chown system radio /sys/class/input/input3/mode
+    chown system radio /sys/class/input/input3/enable
+    chown system radio /sys/class/input/input3/offset_filt_x
+    chown system radio /sys/class/input/input3/offset_filt_y
+    chown system radio /sys/class/input/input3/offset_filt_z
+    chown system radio /sys/class/input/input3/selftest
+    chown system radio /sys/class/input/input3/delay
+    chown system radio /sys/class/input/input3/update
+    chown system radio /sys/class/input/input3/range
+    chown system radio /sys/class/input/input3/bandwidth
+    
+    chmod 0664 /sys/class/input/input3/raw_data
+    chmod 0664 /sys/class/input/input3/value
+    chmod 0664 /sys/class/input/input3/fast_calibration_x
+    chmod 0664 /sys/class/input/input3/fast_calibration_y
+    chmod 0664 /sys/class/input/input3/fast_calibration_z
+    chmod 0664 /sys/class/input/input3/eeprom_writing
+    chmod 0664 /sys/class/input/input3/enable
+
+    chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
+    chown system radio /sys/class/sensors/accelerometer_sensor/raw_value
+    chown system radio /sys/class/sensors/accelerometer_sensor/mode
+    chown system radio /sys/class/sensors/accelerometer_sensor/enable
+    chown system radio /sys/class/sensors/accelerometer_sensor/selftest
+    chown system radio /sys/class/sensors/accelerometer_sensor/delay
+    chown system radio /sys/class/sensors/accelerometer_sensor/calibration
+    chown system radio /sys/class/sensors/accelerometer_sensor/name
+    chown system radio /sys/class/sensors/accelerometer_sensor/vendor
+    
+    chmod 0664 /sys/class/sensors/accelerometer_sensor/raw_data
+    chmod 0664 /sys/class/sensors/accelerometer_sensor/raw_value
+    chmod 0664 /sys/class/sensors/accelerometer_sensor/mode
+    chmod 0664 /sys/class/sensors/accelerometer_sensor/enable
+    chmod 0664 /sys/class/sensors/accelerometer_sensor/selftest
+    chmod 0664 /sys/class/sensors/accelerometer_sensor/delay
+    chmod 0664 /sys/class/sensors/accelerometer_sensor/calibration
+    chmod 0444 /sys/class/sensors/accelerometer_sensor/name
+    chmod 0444 /sys/class/sensors/accelerometer_sensor/vendor
+
+    chown system radio /efs/calibration_data
+    chmod 0666 /efs/calibration_data
+
+#for cts test
+    chown system system /sys/devices/virtual/camera/rear/rear_flash
+    chmod 0664 /sys/devices/platform/Sec_BattMonitor/power_supply/battery/reset_soc
+    chmod 0664 /sys/devices/platform/Sec_BattMonitor/fuelgaic
+    chmod 0664 /sys/kernel/debug/pxa/cp15	
+    chmod 0664 /sys/kernel/debug/pxa/stat/vpu_dc_stat
+    chmod 0664 /sys/kernel/debug/pxa/stat/cpu_dc_stat
+    chmod 0664 /sys/kernel/debug/pxa/l2
+    chmod 0664 /sys/devices/virtual/camera/rear/rear_flash
+    chmod 0664 /sys/kernel/debug/pxa/scu
+    chmod 0664 /sys/kernel/debug/pxa/stat/gc_dc_stat
+    chmod 0664 /sys/kernel/debug/pxa/dvfs/enable_volt_based_dvfm
+    chmod 0664 /sys/kernel/debug/pxa/stat/ddr_dc_stat
+    chmod 0664 /sys/kernel/debug/pxa/gic_dist
+    chmod 0664 /sys/kernel/debug/pxa/dvfs/dc_clk_dvfs
+
+#for charge current
+    chown radio media_rw /sys/class/power_supply/battery/device/call_status
+
+# For Datarouter
+    chown system system /dev/dun
+    chown system system /dev/ttyGS0
+    chown system system /dev/ttyGS1
+    chown system system /dev/ttyGS2
+    chown system system /dev/ttyGS3
+
+
+#~ #service systemd /sbin/systemd
+#~ #    class core
+#~ #    critical
+
+    #~ # set opengles version as 0x20000
+    #~ # opengles major version = (version & 0xffff0000)>>16
+    #~ # opengles minor version = version & 0xffff
+    #~ setprop ro.opengles.version 131072
+
+
+#~ # SISO-ANDR-PERF :: START Changing governor to interactive and scheduler to cfq after boot complete
+#~ on property:sys.boot_completed=1
+    #~ write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor	ondemand
+    #~ write /sys/block/mmcblk0/queue/scheduler cfq
+#~ # SISO-ANDR-PERF :: END HERE
+
+#~ on property:persist.sys.dump.enable=1
+    #~ write /sys/power/panic CRASH_ENABLE
+
+#~ # on property:persist.sys.tools.enable=1
+#~ #     mkdir /data/vendor
+#~ #     mount ext4 /dev/block/mmcblk0p15 /data/vendor
+#~ #     chown system system /data/vendor
+#~ #     chmod 0755 /data/vendor
+
+#~ on property:persist.sys.tools.enable=0
+    #~ exec /system/bin/umount /data/vendor
+
+#~ #preload mount. at time use preinstaller
+#~ on property:persist.sys.storage_preload=1
+    #~ mount ext4 /dev/block/mmcblk0p16 /preload nosuid nodev noatime wait ro
+    #~ setprop storage.preload.complete 1
+
+#~ on property:persist.sys.storage_preload=0
+    #~ exec /system/bin/unmount /preload
+
+# create virtual SD card at /mnt/sdcard, based on the /data/media directory
+# daemon will drop to user/group system/media_rw after initializing
+# underlying files in /data/media will be created with user and group media_rw (1023)
+#~ service sdcard /system/bin/sdcard /data/media 1023 1023
+	#~ class late_start
+
+#~ service shutanim /system/bin/bootanimation  -shutdown
+    #~ class main
+    #~ user graphics
+    #~ group graphics inet
+    #~ disabled
+    #~ oneshot
+
+#~ service dbus /system/bin/dbus-daemon --system --nofork
+    #~ class main
+    #~ socket dbus stream 660 bluetooth bluetooth
+    #~ user bluetooth
+    #~ group bluetooth net_bt_admin
+
+#~ service bluetoothd /system/bin/bluetoothd -n
+    #~ class main
+    #~ socket bluetooth stream 660 bluetooth bluetooth
+    #~ socket dbus_bluetooth stream 660 bluetooth bluetooth
+    #~ # init.rc does not yet support applying capabilities, so run as root and
+    #~ # let bluetoothd drop uid to bluetooth with the right linux capabilities
+    #~ group bluetooth net_bt_admin misc
+    #~ disabled
+
+# for bluetooth rf test.
+#~ service bt_dut_cmd /system/bin/mrvl_dut
+#~      class main
+#~      group bluetooth net_bt_admin
+#~      disabled
+#~      oneshot
+
+#~ service chargerboot /charger
+     #~ class charger
+     #~ oneshot
+
+#~ service sensord /system/bin/sensord
+#~ 	class main
+#~ 	user system
+#~ 	group system
+#    start sensord
+
+#~ # we will start as root and wpa_supplicant will switch to user wifi
+#~ # after setting up the capabilities required for WEXT
+#~ service p2p_supplicant /system/bin/p2p_supplicant \
+    #~ -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1
+    #~ class main
+    #~ disabled
+    #~ oneshot
+
+#~ # we will start as root and wpa_supplicant will switch to user wifi
+#~ # after setting up the capabilities required for WEXT
+#~ service wpa_supplicant /system/bin/wpa_supplicant \
+    #~ -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -e/data/misc/wifi/entropy.bin
+    #~ class main
+    #~ socket wpa_wlan0 dgram 660 wifi wifi
+    #~ disabled
+    #~ oneshot
+
+#~ service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
+    #~ class main
+    #~ disabled
+    #~ oneshot
+
+#~ service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
+    #~ class main
+    #~ disabled
+    #~ oneshot
+
+#~ service dhcpcd_p2p /system/bin/dhcpcd -ABKL
+    #~ class main
+    #~ disabled
+    #~ oneshot
+
+#~ service iprenew_wlan0 /system/bin/dhcpcd -n
+    #~ class main
+    #~ disabled
+    #~ oneshot
+
+#~ service iprenew_p2p /system/bin/dhcpcd -n
+    #~ class main
+    #~ disabled
+    #~ oneshot
+
+#~ #for WiFi MFG(TestMode)
+#~ service mfgloader /system/bin/mfgloader
+    #~ class main
+    #~ disabled
+    #~ oneshot
+
+#~ service wlandutservice /system/bin/wlandutservice
+    #~ class main
+    #~ user system
+    #~ group wifi net_raw net_admin system inet
+    #~ disabled
+    #~ oneshot
+
+#~ service macloader /system/bin/macloader
+    #~ class main
+    #~ oneshot
+#~ # end of wifi
+
+#~ # For Datarouter
+    #~ chown system system /dev/dun
+    #~ chown system system /dev/ttyGS0
+    #~ chown system system /dev/ttyGS1
+    #~ chown system system /dev/ttyGS2
+    #~ chown system system /dev/ttyGS3
+
+#~ #datarouter
+#~ service DR-daemon /system/bin/ddexe
+    #~ class main
+    #~ user root
+    #~ group system radio inet net_raw
+ 
+#~ service KIES-daemon /system/bin/kiesexe
+    #~ class main
+    #~ user root
+    #~ group system radio inet net_raw
+ 
+#~ service SMD-daemon /system/bin/smdexe
+    #~ class main
+    #~ user root
+    #~ group system radio inet net_raw
+ 
+#~ service DTT-daemon /system/bin/dttexe
+    #~ class main
+    #~ user root
+    #~ group system radio inet net_raw
+
+#~ service BCS-daemon /system/bin/connfwexe
+    #~ class main
+    #~ user root
+    #~ group system radio inet net_raw
+     
+#~ service mobex-daemon /system/bin/npsmobex
+    #~ class main
+    #~ user system
+    #~ group system inet sdcard_rw
+
+#~ # init.rc does not yet support applying capabilities, so run as root and
+#~ # let wireless daemon drop uid to system with the right linux capabilities
+#~ service mwirelessd /system/bin/MarvellWirelessDaemon
+    #~ class main
+
+#~ #service vncserver /system/bin/logwrapper /system/bin/androidvncserver
+#~ #    class main
+
+#~ service filemonitor /system/bin/FileMonitorService
+    #~ class main
+    #~ user system
+    #~ group system
+
+#~ #service setup_fs /system/bin/setup_fs /dev/block/platform/sdhci-pxav3.2/by-name/cache /dev/block/platform/sdhci-pxav3.2/by-name/NVM
+#~ service setup_fs /system/bin/setup_fs /dev/block/mmcblk0p15 /dev/block/mmcblk0p12
+#~     class main
+#~     user root
+#~     group root
+#~     oneshot
+
+#~ # check internal storage fs, this makes sure that /dev/block/mmcblk0p16 has valid fat file system on emei dkb
+#~ # /dev/block/mmcblk0p16 is primary storage in emei dkb-emmc, customer should make sure their primary storage has valid
+#~ # fat file system
+#~ #service fsck /system/bin/emmc_fsck /dev/block/mmcblk0p16 /tmp
+#~ #    class main
+#~ #    user root
+#~ #    oneshot
+
+#~ service PowerDaemon /system/bin/powerdaemon -A -D
+    #~ class main
+    #~ user system
+    #~ group system
+
+#~ # init.rc does not yet support applying capabilities, so run as root and
+#~ # let FMRadioServer drop uid to system with the right linux capabilities
+#~ service FMRadiod /system/bin/FMRadioServer
+    #~ class main
+    
+    
+# LPM (from P3100)
+on property:ro.bootmode=charger
+    mount ext4 /dev/block/platform/omap/omap_hsmmc.1/by-name/FACTORYFS /system wait ro
+
+on property:ro.bootmode=charger
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 04e8
+    write /sys/class/android_usb/android0/idProduct 6860
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/enable 1
+    write /sys/class/android_usb/android0/iManufacturer samsung
+    write /sys/class/android_usb/android0/iProduct $(ro.product.model)
+    start adbd
+
+on property:ro.bootmode=charger
+    start pvrsrvinit
+
+on property:ro.bootmode=charger
+    class_start charger
+
+service charger /charger
+    class charger
+    user root

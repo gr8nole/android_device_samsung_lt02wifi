@@ -1,0 +1,121 @@
+on init
+    export NVM_ROOT_DIR /NVM
+    export MARVELL_RW_DIR /tmp/acat
+    # RIL properties
+    setprop rild.libpath /system/lib/libmarvell-ril.so
+    # set CP master or slave
+    setprop persist.radio.pcmmaster 1
+
+on fs
+# mount emmc partitions
+
+    # create directory for NVM data, and mount nvm partition on it
+    mkdir /NVM 0744 system system
+
+    # for e2fsck bad block of /NVM partition before mount
+    check_fs /dev/block/mmcblk0p12 ext4
+
+    mount ext4 /dev/block/mmcblk0p12 /NVM nosuid nodev nodelalloc,noauto_da_alloc
+    chown system system /NVM
+    chmod 0775 /NVM
+
+    # create /tmp directory
+    mkdir /tmp 0700 system system
+    mount tmpfs tmpfs /tmp mode=0775,uid=1000,gid=1000
+
+    # for log capture
+    mkdir /data/Mlog 0775 radio radio
+    chown radio radio /data/Mlog
+    chmod 0775 /data/Mlog
+
+on post-fs-data
+    #~ # for simal
+    #~ mkdir /data/misc/simal 0775 wifi system
+    #~ chmod 0775 /data/misc/simal
+
+    #~ # for Phone plugin
+    #~ mkdir /data/misc/phone 0775 media media
+    #~ chown media media /data/misc/phone
+    #~ chmod 0775 /data/misc/phone
+
+#~ on property:persist.radio.mainlog.enable=1
+    #~ start mainlog
+
+#~ on property:persist.radio.mainlog.enable=0
+    #~ stop mainlog
+
+#~ on property:persist.radio.radiolog.enable=1
+    #~ start radiolog
+
+#~ on property:persist.radio.radiolog.enable=0
+    #~ stop radiolog
+
+#~ on property:init.svc.nvm=stopped
+    #~ exec /system/bin/telmon nvm
+
+#~ on property:init.svc.atcmdsrv=stopped
+    #~ exec /system/bin/telmon atcmdsrv
+
+#~ on property:init.svc.vcm=stopped
+    #~ exec /system/bin/telmon vcm
+
+#~ service simal /system/bin/simal
+    #~ class main
+    #~ user wifi
+    #~ group system
+
+#~ service ipv6-network-manager /system/bin/ipv6-network-manager
+    #~ class main
+
+#~ service eeh /system/bin/eeh -M yes
+    #~ disabled
+    #~ group system
+
+#~ service nvm /system/bin/nvm
+    #~ disabled
+    #~ oneshot
+    #~ group system
+
+#~ service nvm-aponly /system/bin/nvm -A
+    #~ disabled
+    #~ oneshot
+    #~ group system
+
+#~ service diag /system/bin/diag
+    #~ disabled
+    #~ group system
+
+#~ service diag-aponly /system/bin/diag -A
+    #~ disabled
+    #~ group system
+
+#~ service atcmdsrv /system/bin/atcmdsrv
+    #~ disabled
+    #~ oneshot
+    #~ group system
+
+#~ service atcmdsrv-aponly /system/bin/atcmdsrv -M yes -A
+    #~ disabled
+    #~ group system
+
+#~ service vcm /system/bin/vcm
+    #~ disabled
+    #~ oneshot
+    #~ group system
+
+#~ service marvelltel /system/bin/tel_launch.sh
+    #~ class main
+    #~ oneshot
+    #~ group system
+
+#~ service mainlog /system/bin/logcat -f /data/Mlog/main -v threadtime -n 5 -r 1024
+    #~ user radio
+    #~ group system log
+    #~ disabled
+    #~ oneshot
+
+#~ service radiolog /system/bin/logcat -f /data/Mlog/radio -v threadtime -n 5 -b radio -r 1024
+    #~ user radio
+    #~ group system log
+    #~ disabled
+    #~ oneshot
