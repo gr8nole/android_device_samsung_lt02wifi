@@ -12,7 +12,7 @@
 
 # vold-managed volumes ("block device" is actually a sysfs devpath)
 # ?not working?
-/devices/platform/sdhci-pxav3.0/mmc_host/mmc1	/storage/sdcard1	auto	defaults	voldmanaged=sdcard1:auto
+#/devices/platform/sdhci-pxav3.0/mmc_host/mmc1	/storage/sdcard1	auto	defaults	voldmanaged=sdcard1:auto
 
 # recovery
 /dev/block/mmcblk0p9	/boot		emmc	defaults	recoveryonly

@@ -52,6 +52,10 @@ on init
     mkdir /mnt/fuse 0700 root system
     mount tmpfs tmpfs /mnt/fuse mode=0775,gid=1000
 
+    # ko files for exfat
+    insmod /lib/modules/exfat_core.ko
+    insmod /lib/modules/exfat_fs.ko
+	
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 04e8
     write /sys/class/android_usb/android0/idProduct 6860
@@ -61,6 +65,8 @@ on init
     write /sys/class/android_usb/android0/iProduct ${ro.product.model}
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
+    # Set touchscreen to landscape mode for recovery
+    write /sys/devices/virtual/sec/tsp/orientation 6
 
 on boot
 
@@ -100,3 +106,4 @@ on property:sys.storage.ums_enabled=0
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/functions adb
     write /sys/class/android_usb/android0/enable ${service.adb.root}
+
