@@ -47,7 +47,7 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/samsung/lt02
-TARGET_KERNEL_CONFIG := pxa986_lt02wifi_blackhawk_defconfig
+TARGET_KERNEL_CONFIG := blackhawk_lt02_defconfig
 BOARD_KERNEL_CMDLINE := 
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
@@ -71,12 +71,12 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 12582912
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1507852288
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 5775556608
 BOARD_FLASH_BLOCK_SIZE := 4096
-BOARD_UMS_LUNFILE := "/sys/class/android_usb/f_mass_storage/lun/file"
+BOARD_UMS_LUNFILE := "/sys/class/android_usb/f_mass_storage/lun0/file"
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 
 # Recovery
-#TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
+TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
 TARGET_RECOVERY_FSTAB := device/samsung/lt02wifi/rootdir/fstab.pxa988
 RECOVERY_FSTAB_VERSION := 2
 TARGET_RECOVERY_INITRC := device/samsung/lt02wifi/recovery/root/init.recovery.rc
@@ -109,7 +109,7 @@ WIFI_DRIVER_FW_PATH_P2P := "drv_mode=5"
 BOARD_VOLD_MAX_PARTITIONS := 17
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/f_mass_storage/lun/file"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/f_mass_storage/lun%d/file"
 
 # Graphics
 USE_OPENGL_RENDERER := true
