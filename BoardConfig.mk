@@ -138,3 +138,7 @@ TARGET_SPECIFIC_HEADER_PATH := device/samsung/lt02wifi/include
 #BOARD_SEPOLICY_DIRS += \
 #    device/samsung/lt02wifi/sepolicy
 #BOARD_SEPOLICY_UNION += \
+
+# For Philz Touch
+BRIGHTNESS_SYS_FILE := sys/class/backlight/panel/backlight
+BOOTLOADER_CMD_ARG := false
