@@ -14,7 +14,7 @@
 /dev/block/platform/sdhci-pxav3.2/by-name/MODEM		  /modem               emmc      defaults    recoveryonly
 
 # External SD Card
-/devices/platform/sdhci-pxav3.0/mmc_host/mmc1 	  	  auto                 auto      defaults    voldmanaged=extSdCard:auto
+/devices/platform/sdhci-pxav3.0/mmc_host/mmc1 	  	  auto                 auto      defaults    voldmanaged=sdcard1:auto
 
 
 
