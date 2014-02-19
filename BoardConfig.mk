@@ -52,17 +52,17 @@ BOARD_KERNEL_CMDLINE :=
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
 BOARD_KERNEL_PAGESIZE := 2048
-TARGET_PREBUILT_KERNEL := 
+# TARGET_PREBUILT_KERNEL := 
 
 # Kernel Modules
-SAMSUNG_MODULES:
-	make -C kernel/samsung/lt02_modules/ clean_modules KERNELDIR=$(KERNEL_OUT) CROSS_COMPILE=$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-
-	make -C kernel/samsung/lt02_modules/ modules CFLAGS_MODULE=-fno-pic KERNELDIR=$(KERNEL_OUT) CROSS_COMPILE=$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-
-	mkdir -p out/target/product/lt02wifi/recovery/root/lib/modules
-	cp $(KERNEL_OUT)/drivers/exfat/*.ko out/target/product/lt02wifi/recovery/root/lib/modules/
-	find kernel/samsung/lt02_modules/ -type f -name *.ko -exec cp {} $(KERNEL_MODULES_OUT) \;
+# SAMSUNG_MODULES:
+#	make -C kernel/samsung/lt02_modules/ clean_modules KERNELDIR=$(KERNEL_OUT) CROSS_COMPILE=$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-
+#	make -C kernel/samsung/lt02_modules/ modules CFLAGS_MODULE=-fno-pic KERNELDIR=$(KERNEL_OUT) CROSS_COMPILE=$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-
+#	mkdir -p out/target/product/lt02wifi/recovery/root/lib/modules
+#	cp $(KERNEL_OUT)/drivers/exfat/*.ko out/target/product/lt02wifi/recovery/root/lib/modules/
+#	find kernel/samsung/lt02_modules/ -type f -name *.ko -exec cp {} $(KERNEL_MODULES_OUT) \;
 
-TARGET_KERNEL_MODULES += SAMSUNG_MODULES
+#TARGET_KERNEL_MODULES += SAMSUNG_MODULES
     
 # Partitions
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -140,5 +140,5 @@ TARGET_SPECIFIC_HEADER_PATH := device/samsung/lt02wifi/include
 #BOARD_SEPOLICY_UNION += \
 
 # For Philz Touch
-BRIGHTNESS_SYS_FILE := sys/class/backlight/panel/backlight
+BRIGHTNESS_SYS_FILE := sys/class/backlight/panel/brightness
 BOOTLOADER_CMD_ARG := false
