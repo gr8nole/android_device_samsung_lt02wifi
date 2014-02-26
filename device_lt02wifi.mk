@@ -17,6 +17,7 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/lt02wifi/overlay
 # PRODUCT_COPY_FILES += \
 #    $(LOCAL_KERNEL):kernel
 
+
 $(call inherit-product, build/target/product/full.mk)
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
@@ -30,7 +31,8 @@ PRODUCT_PACKAGES += \
 
 # fstab:
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/fstab.pxa988:root/fstab.pxa988
+    $(LOCAL_PATH)/rootdir/fstab.pxa988:root/fstab.pxa988 \
+    $(LOCAL_PATH)/rootdir/extra.fstab:recovery/root/etc/extra.fstab
 
 # init.rc's:
 PRODUCT_COPY_FILES += \
