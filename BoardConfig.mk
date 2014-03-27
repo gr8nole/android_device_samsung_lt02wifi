@@ -79,12 +79,12 @@ BOARD_HAS_NO_MISC_PARTITION := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
 TARGET_RECOVERY_FSTAB := device/samsung/lt02wifi/rootdir/fstab.pxa988
 RECOVERY_FSTAB_VERSION := 2
-TARGET_RECOVERY_INITRC := device/samsung/lt02wifi/recovery/root/init.recovery.rc
+#TARGET_RECOVERY_INITRC := device/samsung/lt02wifi/recovery/root/init.recovery.rc
 BOARD_RECOVERY_SWIPE := true
 
 # Init
-TARGET_PROVIDES_INIT := true
-TARGET_PROVIDES_INIT_TARGET_RC := true
+#TARGET_PROVIDES_INIT := true
+#TARGET_PROVIDES_INIT_TARGET_RC := true
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
@@ -138,4 +138,21 @@ TARGET_SPECIFIC_HEADER_PATH := device/samsung/lt02wifi/include
 #BOARD_SEPOLICY_DIRS += \
 #    device/samsung/lt02wifi/sepolicy
 #BOARD_SEPOLICY_UNION += \
+
+#TWRP
+DEVICE_RESOLUTION := 1024x600
+RECOVERY_SDCARD_ON_DATA := true
+TW_INTERNAL_STORAGE_PATH := "/data/media"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+BOARD_HAS_NO_REAL_SDCARD := true
+SP1_NAME := "efs"
+SP1_BACKUP_METHOD := files
+TW_NO_USB_STORAGE := true
+TW_INCLUDE_FUSE_EXFAT := true
+HAVE_SELINUX := true
+TW_NO_REBOOT_BOOTLOADER := true
+TW_HAS_DOWNLOAD_MODE := true
+
 

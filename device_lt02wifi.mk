@@ -32,10 +32,12 @@ PRODUCT_PACKAGES += \
 # fstab:
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/fstab.pxa988:root/fstab.pxa988 \
-    $(LOCAL_PATH)/rootdir/extra.fstab:recovery/root/etc/extra.fstab
+    $(LOCAL_PATH)/rootdir/extra.fstab:recovery/root/etc/extra.fstab \
+    $(LOCAL_PATH)/rootdir/twrp.fstab:recovery/root/etc/twrp.fstab
 
 # init.rc's:
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/init.recovery.pxa988.rc:root/init.recovery.pxa988.rc \
     $(LOCAL_PATH)/rootdir/init.pxa988.rc:root/init.pxa988.rc \
     $(LOCAL_PATH)/rootdir/init.pxa988.usb.rc:root/init.pxa988.usb.rc \
     $(LOCAL_PATH)/rootdir/init.pxa988.tel.rc:root/init.pxa988.tel.rc
