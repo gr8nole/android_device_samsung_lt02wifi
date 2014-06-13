@@ -1,33 +1,38 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-# The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
-
 $(call inherit-product-if-exists, vendor/samsung/lt02wifi/lt02wifi-vendor.mk)
 
-DEVICE_PACKAGE_OVERLAYS += device/samsung/lt02wifi/overlay
+#DEVICE_PACKAGE_OVERLAYS += device/samsung/lt02wifi/overlay
 
-# LOCAL_PATH := device/samsung/lt02wifi
-# ifeq ($(TARGET_PREBUILT_KERNEL),)
-#	LOCAL_KERNEL := $(LOCAL_PATH)/kernel
-# else
-#	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-# endif
+#$(call inherit-product, build/target/product/full.mk)
 
-# PRODUCT_COPY_FILES += \
-#    $(LOCAL_KERNEL):kernel
+PRODUCT_CHARACTERISTICS := tablet
 
+# Screen size is "large", density is "mdpi", need "hdpi" for extra drawables
+PRODUCT_AAPT_CONFIG := large mdpi hdpi
+PRODUCT_AAPT_PREF_CONFIG := mdpi
 
-$(call inherit-product, build/target/product/full.mk)
+# we have enough storage space to hold precise GC data
+PRODUCT_TAGS += dalvik.gc.type-precise
 
-PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
-PRODUCT_NAME := full_lt02wifi
-PRODUCT_DEVICE := lt02wifi
+# Set property overrides
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapsize=128m \
+    ro.carrier=wifi-only
 
 # Charger
 PRODUCT_PACKAGES += \
     charger \
     charger_res_images
+
+# Default HWComposer
+PRODUCT_PACKAGES += \
+    hwcomposer.default
+
+# Graphics config
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/gfx.cfg:system/etc/gfx.cfg \
+    $(LOCAL_PATH)/configs/dms.cfg:system/etc/dms.cfg
 
 # fstab:
 PRODUCT_COPY_FILES += \
@@ -41,7 +46,39 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/init.pxa988.rc:root/init.pxa988.rc \
     $(LOCAL_PATH)/rootdir/init.pxa988.usb.rc:root/init.pxa988.usb.rc \
     $(LOCAL_PATH)/rootdir/init.pxa988.tel.rc:root/init.pxa988.tel.rc
+
+# Init files
+PRODUCT_PACKAGES += \
+    fstab.pxa988 \
+    init.pxa988.rc \
+    init.pxa988.usb.rc \
+    ueventd.pxa988.rc
     
 # uevent.rc
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/ueventd.pxa988.rc:root/ueventd.pxa988.rc
+
+# Audio
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
+
+# Wifi
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+
+# GPS
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/sirfgps.conf:system/etc/sirfgps.conf
+
+# Misc
+PRODUCT_PACKAGES += \
+    com.android.future.usb.accessory
+
+# Live Wallpapers
+PRODUCT_PACKAGES += \
+    LiveWallpapers \
+    LiveWallpapersPicker \
+    VisualizationWallpapers \
+    librs_jni
+
+$(call inherit-product, frameworks/native/build/tablet-7in-hdpi-1024-dalvik-heap.mk)

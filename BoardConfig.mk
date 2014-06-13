@@ -14,14 +14,6 @@
 #
 
 
-##
-## THIS FILE WAS CREATED MAINLY BY TRIAL AND ERROR!
-## USE AT OWN RISK AND PLEASE REPORT BACK. THX.
-##
-
-# inherit from the proprietary version
--include vendor/samsung/lt02wifi/BoardConfigVendor.mk
-
 # Target info
 USE_CAMERA_STUB := true
 BOARD_HAS_NO_SELECT_BUTTON := true
@@ -39,6 +31,7 @@ TARGET_CPU_SMP := true
 TARGET_BOOTLOADER_BOARD_NAME := PXA988
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
+COMMON_GLOBAL_CFLAGS += -DNO_RGBX_8888
 TARGET_GLOBAL_CFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 
@@ -46,16 +39,16 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 #TARGET_BOARD_INFO_FILE := device/samsung/lt02wifi/board-info.txt
 
 # Kernel
-TARGET_KERNEL_SOURCE := kernel/samsung/lt02
-TARGET_KERNEL_CONFIG := blackhawk_lt02_defconfig
+TARGET_KERNEL_SOURCE := kernel/samsung/lt02_4.2.2
+TARGET_KERNEL_CONFIG := kerNole_lt02_defconfig
 BOARD_KERNEL_CMDLINE := 
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
 BOARD_KERNEL_PAGESIZE := 2048
 # TARGET_PREBUILT_KERNEL := 
 
-# Kernel Modules
-# SAMSUNG_MODULES:
+#Kernel Modules
+#SAMSUNG_MODULES:
 #	make -C kernel/samsung/lt02_modules/ clean_modules KERNELDIR=$(KERNEL_OUT) CROSS_COMPILE=$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-
 #	make -C kernel/samsung/lt02_modules/ modules CFLAGS_MODULE=-fno-pic KERNELDIR=$(KERNEL_OUT) CROSS_COMPILE=$(ANDROID_TOOLCHAIN)/arm-linux-androideabi-
 #	mkdir -p out/target/product/lt02wifi/recovery/root/lib/modules
@@ -83,17 +76,17 @@ RECOVERY_FSTAB_VERSION := 2
 BOARD_RECOVERY_SWIPE := true
 
 # Init
-#TARGET_PROVIDES_INIT := true
-#TARGET_PROVIDES_INIT_TARGET_RC := true
+TARGET_PROVIDES_INIT := true
+TARGET_PROVIDES_INIT_TARGET_RC := true
 
 # Wifi related defines
-BOARD_WPA_SUPPLICANT_DRIVER := NL80211
-WPA_SUPPLICANT_VERSION := VER_0_8_X
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mrvl8787
-BOARD_HOSTAPD_DRIVER := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mrvl8787
-BOARD_WLAN_DEVICE := mrvl8787
-BOARD_WLAN_VENDOR := MRVL
+#BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+#WPA_SUPPLICANT_VERSION := VER_0_8_X
+#BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mrvl8787
+#BOARD_HOSTAPD_DRIVER := NL80211
+#BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mrvl8787
+#BOARD_WLAN_DEVICE := mrvl8787
+#BOARD_WLAN_VENDOR := MRVL
 WIFI_SDIO_IF_DRIVER_MODULE_PATH  := "/system/lib/modules/mlan.ko"
 WIFI_SDIO_IF_DRIVER_MODULE_NAME  := "mlan"
 WIFI_SDIO_IF_DRIVER_MODULE_ARG   := ""
@@ -113,7 +106,10 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/f_mass_storage/lun%d/
 
 # Graphics
 USE_OPENGL_RENDERER := true
-#BOARD_EGL_CFG := device/samsung/lt02wifi/configs/egl.cfg
+BOARD_EGL_CFG := device/samsung/lt02wifi/configs/egl.cfg
+BOARD_EGL_NEEDS_LEGACY_FB := true
+COMMON_GLOBAL_CFLAGS += -DWORKAROUND_BUG_10194508
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # Audio
 BOARD_USES_ALSA_AUDIO := true
@@ -135,9 +131,22 @@ BOARD_CHARGING_MODE_BOOTING_LPM := true
 TARGET_SPECIFIC_HEADER_PATH := device/samsung/lt02wifi/include
 
 # SELinux
-#BOARD_SEPOLICY_DIRS += \
-#    device/samsung/lt02wifi/sepolicy
-#BOARD_SEPOLICY_UNION += \
+BOARD_SEPOLICY_DIRS += \
+    device/samsung/lt02wifi/sepolicy
+
+BOARD_SEPOLICY_UNION += \
+    file_contexts \
+    device.te \
+    dhcp.te \
+    file.te \
+    init.te \
+    mediaserver.te \
+    netmgrd.te \
+    rild.te \
+    secril.te \
+    system.te \
+    ueventd.te \
+    wpa_supplicant.te
 
 #TWRP
 DEVICE_RESOLUTION := 1024x600
@@ -154,5 +163,7 @@ TW_INCLUDE_FUSE_EXFAT := true
 HAVE_SELINUX := true
 TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
+TW_MAX_BRIGHTNESS := 255
+TW_BRIGHTNESS_PATH := /sys/class/backlight/panel/brightness
 
 
