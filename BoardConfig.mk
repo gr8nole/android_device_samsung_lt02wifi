@@ -105,7 +105,7 @@ BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/f_mass_storage/lun%d/file"
 
 # Graphics
-USE_OPENGL_RENDERER := true
+USE_OPENGL_RENDERER := false
 BOARD_EGL_CFG := device/samsung/lt02wifi/configs/egl.cfg
 BOARD_EGL_NEEDS_LEGACY_FB := true
 COMMON_GLOBAL_CFLAGS += -DWORKAROUND_BUG_10194508

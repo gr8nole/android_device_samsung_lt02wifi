@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+**
+** Copyright 2009, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License")
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<device name="Android">
+  <!-- All values are in mAh except as noted -->
+  <item name="none">0</item>
+  <item name="screen.on">176</item>
+  <item name="bluetooth.active">107.6</item>
+  <item name="bluetooth.on">0.4</item>
+  <item name="screen.full">374</item>
+  <item name="wifi.on">0.3</item>
+  <item name="wifi.active">31.0</item>
+  <item name="wifi.scan">6.5</item>
+  <item name="dsp.audio">43</item>
+  <item name="dsp.video">416</item>
+  <item name="radio.active">140.9</item>
+  <!-- The current consumed by the radio when it is scanning for a signal -->
+  <item name="radio.scanning">18.5</item>
+  <item name="gps.on">0.2</item>
+  <!-- Current consumed by the radio at different signal strengths, when paging -->
+  <array name="radio.on"> <!-- Strength 0 to BINS-1 -->
+      <value>4.3</value>
+      <value>4.3</value>
+  </array>
+  <!-- Different CPU speeds as reported in
+       /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state -->
+  <array name="cpu.speeds">
+      <value>1500000</value>
+      <value>1400000</value>
+      <value>1300000</value>
+      <value>1200000</value>
+      <value>1100000</value>
+      <value>1000000</value>
+      <value>900000</value>
+      <value>800000</value>
+      <value>700000</value>
+      <value>600000</value>
+      <value>500000</value>
+      <value>400000</value>
+      <value>300000</value>
+      <value>200000</value>
+  </array>
+  <!-- Power consumption when CPU is idle -->
+  <item name="cpu.idle">1.5</item>
+  <!-- Power consumption due to wake lock held -->
+  <item name="cpu.awake">44</item>
+  <!-- Power consumption at different speeds -->
+  <array name="cpu.active">
+      <value>119</value>
+      <value>112</value>
+      <value>105</value>
+      <value>103</value>
+      <value>102</value>
+      <value>100</value>
+      <value>96</value>
+      <value>75</value>
+      <value>74</value>
+      <value>72</value>
+      <value>71</value>
+      <value>62</value>
+      <value>53</value>
+  </array>
+  <!-- This is the battery capacity in mAh -->
+  <item name="battery.capacity">4450</item>
+</device>

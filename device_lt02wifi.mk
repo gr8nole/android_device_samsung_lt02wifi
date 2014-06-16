@@ -2,7 +2,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 $(call inherit-product-if-exists, vendor/samsung/lt02wifi/lt02wifi-vendor.mk)
 
-#DEVICE_PACKAGE_OVERLAYS += device/samsung/lt02wifi/overlay
+DEVICE_PACKAGE_OVERLAYS += device/samsung/lt02wifi/overlay
 
 $(call inherit-product, build/target/product/full.mk)
 
@@ -24,10 +24,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     charger \
     charger_res_images
-
-# Default HWComposer
-PRODUCT_PACKAGES += \
-    hwcomposer.default
 
 # Graphics config
 PRODUCT_COPY_FILES += \

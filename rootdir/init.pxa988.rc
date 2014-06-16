@@ -1,22 +1,7 @@
 import init.pxa988.usb.rc
-# Phone only:
-#~ import init.pxa988.tel.rc
+
 
 on early-init
-
-# create mountpoints
-    mkdir /mnt 0775 root system
-
-    export EXTERNAL_STORAGE /storage/sdcard0
-    mkdir /storage 0550 system sdcard_r
-    mkdir /storage/sdcard0 0000 system system
-    symlink /storage/sdcard0 /sdcard
-    symlink /storage/sdcard0 /mnt/sdcard
-# map "real" external storages paths also in same way. backwards compatibility.
-    export SECONDARY_STORAGE /storage/sdcard1:/mnt/extSdCard
-    mkdir /storage/sdcard1 0000 system system
-    symlink /storage/sdcard1 /mnt/extSdCard
-
     mkdir /efs 0771 radio system
     
 
@@ -26,7 +11,30 @@ on init
     mkdir /NVM 0775 system system
     
     setprop ro.board.platform mrvl
+     chmod 0701 /mnt/media_rw
+    mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /storage 0550 system sdcard_r
+    mkdir /storage/emulated 0555 root root
+    mkdir /storage/sdcard1 0775 system system
+    mkdir /storage/usbdisk0 0775 system system
+    mkdir /mnt/media_rw/sdcard1 0775 system system
+    mkdir /mnt/media_rw/usbdisk0 0775 system system
 
+    export EXTERNAL_STORAGE /storage/emulated/legacy
+    export SECONDARY_STORAGE /storage/sdcard1:/storage/usbdisk0
+    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    export EMULATED_STORAGE_TARGET /storage/emulated
+
+    # for backwards compatibility
+    symlink /storage/emulated/legacy /sdcard
+    symlink /storage/emulated/legacy /mnt/sdcard
+    symlink /storage/emulated/legacy /storage/sdcard0
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+    symlink /storage/sdcard1 /extSdCard
+    symlink /storage/sdcard1 /mnt/extSdCard
+    symlink /storage/usbdisk0 /usbdisk0
+    symlink /storage/usbdisk0 /mnt/usbdisk0
+	
 # For debugging:
     setprop ro.secure=0
     setprop ro.adb.secure=0
@@ -194,7 +202,7 @@ on fs
 
     # for e2fsck bad block of /data partition before mount
     mount_all /fstab.pxa988
-
+	setprop ro.crypto.fuse_sdcard true
     #mount ext4 /dev/block/mmcblk0p15 /cache
 
     mount debugfs debugfs /sys/kernel/debug
@@ -222,6 +230,10 @@ on post-fs
     symlink /dev/block/mmcblk0p7 /dev/block/param
 
 on post-fs-data
+    # we will remap this as /mnt/sdcard with the sdcard fuse tool
+    mkdir /data/media 0770 media_rw media_rw
+    chown media_rw media_rw /data/media
+    # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
     setprop wifi.interface wlan0
     setprop wifidirect.interface p2p0
@@ -513,223 +525,33 @@ on boot
     chown system system /dev/ttyGS3
 
 
-#~ #service systemd /sbin/systemd
-#~ #    class core
-#~ #    critical
 
-    #~ # set opengles version as 0x20000
-    #~ # opengles major version = (version & 0xffff0000)>>16
-    #~ # opengles minor version = version & 0xffff
-    #~ setprop ro.opengles.version 131072
-
-
-#~ # SISO-ANDR-PERF :: START Changing governor to interactive and scheduler to cfq after boot complete
-#~ on property:sys.boot_completed=1
-    #~ write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor	ondemand
-    #~ write /sys/block/mmcblk0/queue/scheduler cfq
-#~ # SISO-ANDR-PERF :: END HERE
-
-#~ on property:persist.sys.dump.enable=1
-    #~ write /sys/power/panic CRASH_ENABLE
-
-#~ # on property:persist.sys.tools.enable=1
-#~ #     mkdir /data/vendor
-#~ #     mount ext4 /dev/block/mmcblk0p15 /data/vendor
-#~ #     chown system system /data/vendor
-#~ #     chmod 0755 /data/vendor
-
-#~ on property:persist.sys.tools.enable=0
-    #~ exec /system/bin/umount /data/vendor
-
-#~ #preload mount. at time use preinstaller
-#~ on property:persist.sys.storage_preload=1
-    #~ mount ext4 /dev/block/mmcblk0p16 /preload nosuid nodev noatime wait ro
-    #~ setprop storage.preload.complete 1
-
-#~ on property:persist.sys.storage_preload=0
-    #~ exec /system/bin/unmount /preload
 
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # daemon will drop to user/group system/media_rw after initializing
 # underlying files in /data/media will be created with user and group media_rw (1023)
-#~ service sdcard /system/bin/sdcard /data/media 1023 1023
-	#~ class late_start
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+    class late_start
+    oneshot
 
-#~ service shutanim /system/bin/bootanimation  -shutdown
-    #~ class main
-    #~ user graphics
-    #~ group graphics inet
-    #~ disabled
-    #~ oneshot
+service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
+    class late_start
+    disabled
 
-#~ service dbus /system/bin/dbus-daemon --system --nofork
-    #~ class main
-    #~ socket dbus stream 660 bluetooth bluetooth
-    #~ user bluetooth
-    #~ group bluetooth net_bt_admin
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
 
-#~ service bluetoothd /system/bin/bluetoothd -n
-    #~ class main
-    #~ socket bluetooth stream 660 bluetooth bluetooth
-    #~ socket dbus_bluetooth stream 660 bluetooth bluetooth
-    #~ # init.rc does not yet support applying capabilities, so run as root and
-    #~ # let bluetoothd drop uid to bluetooth with the right linux capabilities
-    #~ group bluetooth net_bt_admin misc
-    #~ disabled
+service setup_fs /system/bin/setup_fs /dev/block/platform/sdhci-pxav3.2/by-name/NVM
+    class main
+    user root
+    group root
+    oneshot
 
-# for bluetooth rf test.
-#~ service bt_dut_cmd /system/bin/mrvl_dut
-#~      class main
-#~      group bluetooth net_bt_admin
-#~      disabled
-#~      oneshot
-
-#~ service chargerboot /charger
-     #~ class charger
-     #~ oneshot
-
-#~ service sensord /system/bin/sensord
-#~ 	class main
-#~ 	user system
-#~ 	group system
-#    start sensord
-
-#~ # we will start as root and wpa_supplicant will switch to user wifi
-#~ # after setting up the capabilities required for WEXT
-#~ service p2p_supplicant /system/bin/p2p_supplicant \
-    #~ -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1
-    #~ class main
-    #~ disabled
-    #~ oneshot
-
-#~ # we will start as root and wpa_supplicant will switch to user wifi
-#~ # after setting up the capabilities required for WEXT
-#~ service wpa_supplicant /system/bin/wpa_supplicant \
-    #~ -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -e/data/misc/wifi/entropy.bin
-    #~ class main
-    #~ socket wpa_wlan0 dgram 660 wifi wifi
-    #~ disabled
-    #~ oneshot
-
-#~ service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
-    #~ class main
-    #~ disabled
-    #~ oneshot
-
-#~ service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
-    #~ class main
-    #~ disabled
-    #~ oneshot
-
-#~ service dhcpcd_p2p /system/bin/dhcpcd -ABKL
-    #~ class main
-    #~ disabled
-    #~ oneshot
-
-#~ service iprenew_wlan0 /system/bin/dhcpcd -n
-    #~ class main
-    #~ disabled
-    #~ oneshot
-
-#~ service iprenew_p2p /system/bin/dhcpcd -n
-    #~ class main
-    #~ disabled
-    #~ oneshot
-
-#~ #for WiFi MFG(TestMode)
-#~ service mfgloader /system/bin/mfgloader
-    #~ class main
-    #~ disabled
-    #~ oneshot
-
-#~ service wlandutservice /system/bin/wlandutservice
-    #~ class main
-    #~ user system
-    #~ group wifi net_raw net_admin system inet
-    #~ disabled
-    #~ oneshot
-
-#~ service macloader /system/bin/macloader
-    #~ class main
-    #~ oneshot
-#~ # end of wifi
-
-#~ # For Datarouter
-    #~ chown system system /dev/dun
-    #~ chown system system /dev/ttyGS0
-    #~ chown system system /dev/ttyGS1
-    #~ chown system system /dev/ttyGS2
-    #~ chown system system /dev/ttyGS3
-
-#~ #datarouter
-#~ service DR-daemon /system/bin/ddexe
-    #~ class main
-    #~ user root
-    #~ group system radio inet net_raw
- 
-#~ service KIES-daemon /system/bin/kiesexe
-    #~ class main
-    #~ user root
-    #~ group system radio inet net_raw
- 
-#~ service SMD-daemon /system/bin/smdexe
-    #~ class main
-    #~ user root
-    #~ group system radio inet net_raw
- 
-#~ service DTT-daemon /system/bin/dttexe
-    #~ class main
-    #~ user root
-    #~ group system radio inet net_raw
-
-#~ service BCS-daemon /system/bin/connfwexe
-    #~ class main
-    #~ user root
-    #~ group system radio inet net_raw
-     
-#~ service mobex-daemon /system/bin/npsmobex
-    #~ class main
-    #~ user system
-    #~ group system inet sdcard_rw
-
-#~ # init.rc does not yet support applying capabilities, so run as root and
-#~ # let wireless daemon drop uid to system with the right linux capabilities
-#~ service mwirelessd /system/bin/MarvellWirelessDaemon
-    #~ class main
-
-#~ #service vncserver /system/bin/logwrapper /system/bin/androidvncserver
-#~ #    class main
-
-#~ service filemonitor /system/bin/FileMonitorService
-    #~ class main
-    #~ user system
-    #~ group system
-
-#~ #service setup_fs /system/bin/setup_fs /dev/block/platform/sdhci-pxav3.2/by-name/cache /dev/block/platform/sdhci-pxav3.2/by-name/NVM
-#~ service setup_fs /system/bin/setup_fs /dev/block/mmcblk0p15 /dev/block/mmcblk0p12
-#~     class main
-#~     user root
-#~     group root
-#~     oneshot
-
-#~ # check internal storage fs, this makes sure that /dev/block/mmcblk0p16 has valid fat file system on emei dkb
-#~ # /dev/block/mmcblk0p16 is primary storage in emei dkb-emmc, customer should make sure their primary storage has valid
-#~ # fat file system
-#~ #service fsck /system/bin/emmc_fsck /dev/block/mmcblk0p16 /tmp
-#~ #    class main
-#~ #    user root
-#~ #    oneshot
-
-#~ service PowerDaemon /system/bin/powerdaemon -A -D
-    #~ class main
-    #~ user system
-    #~ group system
-
-#~ # init.rc does not yet support applying capabilities, so run as root and
-#~ # let FMRadioServer drop uid to system with the right linux capabilities
-#~ service FMRadiod /system/bin/FMRadioServer
-    #~ class main
-    
+service sensord /system/bin/sensord
+    class main
+    user system
+    group system
     
 # LPM (from P3100)
 on property:ro.bootmode=charger
