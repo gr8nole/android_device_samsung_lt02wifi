@@ -62,6 +62,18 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
+# Product specific Packages
+PRODUCT_PACKAGES += \
+    libsecril-client
+
+# RIL
+PRODUCT_PROPERTY_OVERRIDES += \
+    mobiledata.interfaces=wlan0
+
+# Disable SELinux
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.boot.selinux=disabled
+
 # GPS
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sirfgps.conf:system/etc/sirfgps.conf
