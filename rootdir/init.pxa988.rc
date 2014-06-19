@@ -1,15 +1,15 @@
 import init.pxa988.usb.rc
 
-
 on early-init
     mkdir /efs 0771 radio system
-    
 
 on init
+
     loglevel 8
     mkdir /preload 0771 system system
     mkdir /NVM 0775 system system
     
+
     setprop ro.board.platform mrvl
      chmod 0701 /mnt/media_rw
     mkdir /mnt/shell/emulated 0700 shell shell
@@ -30,6 +30,7 @@ on init
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+
     symlink /storage/sdcard1 /extSdCard
     symlink /storage/sdcard1 /mnt/extSdCard
     symlink /storage/usbdisk0 /usbdisk0
@@ -41,7 +42,7 @@ on init
     setprop ro.debuggable=1
 
     write /proc/sys/vm/legacy_va_layout 1
-    
+
 # Right now vendor lives on the same filesystem as system,
 # but someday that may change.
     symlink /data/vendor /vendor
@@ -76,6 +77,8 @@ on init
     chmod 0664 /sys/class/mdnie/mdnie/outdoor
     chown system system /sys/class/mdnie/mdnie/negative
     chmod 0664 /sys/class/mdnie/mdnie/negative
+
+
     chown system system /sys/class/mdnie/mdnie/cabc
     chmod 0664 /sys/class/mdnie/mdnie/cabc
     
@@ -88,6 +91,7 @@ on init
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
     chown system system /sys/power/cpufreq_table
 
     chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
@@ -95,6 +99,7 @@ on init
     chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     chmod 0444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+
     chmod 0660 /sys/power/cpufreq_table
 
     #hotplug
@@ -153,18 +158,18 @@ on init
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 
     #pm runtime
+
     chown system system /sys/bus/i2c/devices/1-0020/power/control
     chown system system /sys/bus/i2c/devices/4-0020/power/control
     chown system system /sys/devices/platform/pxa168-fb.0/power/control
     chown system system /sys/devices/platform/pxa168-fb.1/power/control
     chown system system /sys/devices/platform/mrvl8xxx_fm.0/power/control
     chown system system /sys/devices/platform/Sec_BattMonitor/power/control
+
     #autosleep
     chown system system /sys/power/autosleep
-
     chown system system /sys/class/power_supply/battery/device/calibration
     chown system system /proc/driver/sirf
-
     chown system system /sys/class/graphics/fb0/device/vsync
     chmod 0660 /sys/class/graphics/fb0/device/vsync
 
@@ -175,7 +180,6 @@ on init
     # master/slave
     chown system system /proc/driver/ssp_master
     chmod 0666 /proc/driver/ssp_master
-
     chown system system /proc/driver/gssp_master
     chmod 0666 /proc/driver/gssp_master
 
@@ -193,12 +197,12 @@ on init
     write /sys/bus/i2c/devices/1-0020/power/control on
     write /sys/bus/i2c/devices/4-0020/power/control on
 
-
     chown system system /sys/bus/i2c/drivers/fsa9480/7-0025/syssleep
     chmod 0664 /sys/bus/i2c/drivers/fsa9480/7-0025/syssleep
 
 on fs
-        # Mount /system rw first to give the filesystem a chance to save a checkpoint
+
+    # Mount /system rw first to give the filesystem a chance to save a checkpoint
     #mount ext4 /dev/block/mmcblk0p14 /system ordered nodelalloc
     #mount ext4 /dev/block/mmcblk0p14 /system ro remount
 
@@ -210,6 +214,7 @@ on fs
     mount debugfs debugfs /sys/kernel/debug
 
 on post-fs
+
     insmod /system/lib/modules/galcore.ko registerMemBase=0xc0400000 registerMemSize=0x1000 irqLine=40 contiguousSize=0x1800000 pmemSize=0x0
     insmod /system/lib/modules/geu.ko
 
@@ -221,11 +226,11 @@ on post-fs
     insmod /system/lib/modules/exfat_fs.ko
 
     chown system system /sys/devices/platform/galcore/power/control
+
     #gpu
     chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_cur_governor
     chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_min_freq
     chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_max_freq
-
     chown radio system /efs
     chmod 0771 /efs
     
@@ -264,6 +269,11 @@ on post-fs-data
 # MTP permission
 	chmod 0660 /dev/usb_mtp_gadget
 	chown system system /dev/usb_mtp_gadget
+	
+# usb gadget serial permission
+    chmod 0660 /dev/ttyGS0
+    chown system system /dev/ttyGS0
+
 
 # Create radio folder for IMEI file
     mkdir /data/misc/radio 0775 radio system
@@ -284,8 +294,6 @@ on post-fs-data
 
     chmod 0775 /data/log
     chmod 0775 /data/anr
-
-
 
     # save OMA DB, when upgrading from GB to ICS    
     mkdir /data/system/databases 0771 system system
@@ -329,11 +337,6 @@ on post-fs-data
     mkdir /data/etc/sensor 0777 system system
 
 on boot
-# SISO-ANDR-PERF :: START Changing governor to performance and scheduler to noop once boot is started
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor	performance
-    write /sys/block/mmcblk0/queue/scheduler noop
-# SISO-ANDR-PERF :: END HERE
-
     setprop ro.media.gst.enabled 1
     setprop service.camera.af 1
 
@@ -343,6 +346,8 @@ on boot
     setprop ro.nfc.port "I2C"
     chmod 0777 /dev/pn547
     chown nfc nfc /dev/pn547
+
+	setprop ro.opengles.version 131072
 
     chown system system /sys/power/sysoff
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
@@ -470,6 +475,8 @@ on boot
     chown system radio /sys/class/input/input3/range
     chown system radio /sys/class/input/input3/bandwidth
     
+
+
     chmod 0664 /sys/class/input/input3/raw_data
     chmod 0664 /sys/class/input/input3/value
     chmod 0664 /sys/class/input/input3/fast_calibration_x
@@ -589,12 +596,15 @@ service wlandutservice /system/bin/wlandutservice
 service macloader /system/bin/macloader
     class main
     oneshot
-# end of wifi
+
 
 # init.rc does not yet support applying capabilities, so run as root and
 # let wireless daemon drop uid to system with the right linux capabilities
 service mwirelessd /system/bin/MarvellWirelessDaemon
     class main
+
+# end of wifi
+
 
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # daemon will drop to user/group system/media_rw after initializing
