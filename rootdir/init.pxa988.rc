@@ -596,8 +596,6 @@ service macloader /system/bin/macloader
 service mwirelessd /system/bin/MarvellWirelessDaemon
     class main
 
-
-
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # daemon will drop to user/group system/media_rw after initializing
 # underlying files in /data/media will be created with user and group media_rw (1023)
