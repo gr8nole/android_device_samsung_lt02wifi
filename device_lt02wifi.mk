@@ -4,7 +4,7 @@ $(call inherit-product-if-exists, vendor/samsung/lt02wifi/lt02wifi-vendor.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/samsung/lt02wifi/overlay
 
-$(call inherit-product, build/target/product/full.mk)
+$(call inherit-product, build/target/product/full_base.mk)
 
 PRODUCT_CHARACTERISTICS := tablet
 

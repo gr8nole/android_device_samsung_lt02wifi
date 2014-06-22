@@ -104,6 +104,7 @@ WIFI_DRIVER_FW_PATH_P2P := "/system/etc/firmware/mrvl/sd8787_uapsta.bin"
 WIFI_SDIO_IF_DRIVER_MODULE_PATH := "/system/lib/modules/mlan.ko"
 WIFI_SDIO_IF_DRIVER_MODULE_NAME := "mlan"
 WIFI_SDIO_IF_DRIVER_MODULE_ARG := ""
+MRVL_WIRELESS_DAEMON_API := true
 
 # Vold
 BOARD_VOLD_MAX_PARTITIONS := 17
