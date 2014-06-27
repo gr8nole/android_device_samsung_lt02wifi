@@ -82,4 +82,137 @@
     <add-resource type="bool" name="config_enableTorch"></add-resource>
     <bool name="config_enableTorch">false</bool>
 
+    <!-- If true, the screen can be rotated via the accelerometer in all 4
+rotations as the default behavior. -->
+    <bool name="config_sf_limitedAlpha">true</bool>
+ 
+    <bool name="config_allowAllRotations">true</bool>
+
+    <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
+Software implementation will be used if config_hardware_auto_brightness_available is not set -->
+    <bool name="config_automatic_brightness_available">true</bool>
+
+    <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
+The N entries of this array define N + 1 zones as follows:
+
+Zone 0: 0 <= LUX < array[0]
+Zone 1: array[0] <= LUX < array[1]
+...
+Zone N: array[N - 1] <= LUX < array[N]
+Zone N + 1: array[N] <= LUX < infinity
+
+Must be overridden in platform specific overlays
+-->
+    <integer-array name="config_autoBrightnessLevels">
+        <item>6</item>
+        <item>12</item>
+        <item>18</item>
+        <item>28</item>
+        <item>40</item>
+        <item>65</item>
+        <item>100</item>
+        <item>150</item>
+        <item>250</item>
+        <item>350</item>
+        <item>500</item>
+        <item>800</item>
+        <item>1200</item>
+        <item>1800</item>
+        <item>3000</item>
+        <item>6000</item>
+        <item>12000</item>
+        <item>24000</item>
+        <item>36000</item>
+        <item>42700</item>
+    </integer-array>
+
+    <!-- Array of output values for LCD backlight corresponding to the LUX values
+in the config_autoBrightnessLevels array. This array should have size one greater
+than the size of the config_autoBrightnessLevels array.
+-->
+    <integer-array name="config_autoBrightnessLcdBacklightValues">
+        <item>30</item>
+        <item>33</item>
+        <item>36</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+        <item>120</item>
+        <item>150</item>
+        <item>180</item>
+        <item>200</item>
+        <item>210</item>
+        <item>220</item>
+        <item>230</item>
+        <item>240</item>
+        <item>250</item>
+    </integer-array>
+
+    <!-- Array of output values for button backlight corresponding to the LUX values
+in the config_autoBrightnessLevels array. This array should have size one greater
+than the size of the config_autoBrightnessLevels array.
+-->
+    <integer-array name="config_autoBrightnessButtonBacklightValues">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <!-- Array of output values for keyboard backlight corresponding to the LUX values
+in the config_autoBrightnessLevels array. This array should have size one greater
+than the size of the config_autoBrightnessLevels array.
+i9300 has no keyboard so all values are zero.
+-->
+    <integer-array name="config_autoBrightnessKeyboardBacklightValues">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <!-- Minimum screen brightness allowed by the power manager. -->
+    <integer name="config_screenBrightnessDim">20</integer>
+
+
 </resources>
