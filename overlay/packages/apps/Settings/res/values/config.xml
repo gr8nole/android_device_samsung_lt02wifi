@@ -16,8 +16,16 @@
 -->
 
 <resources xmlns:xliff="urnasis:names:tc:xliff:document:1.2 ">
-    <bool name="config_show_expandedDesktop">true</bool>
+	<!-- Whether or not Expanded Desktop settings are to be displayed -->
+	<bool name="config_show_expandedDesktop">true</bool>
 
+	<!-- Home button Wake Support. Some devices do not support this.
+         Setting to false will disable Home button Wake support -->
+    <bool name="config_show_homeWake">true</bool>
+	
+	<!-- Whether or not the dock settings are to be displayed for this device when docked -->
+    <bool name="has_dock_settings">true</bool>
+	
     <!-- Volume Rocker Wake -->
     <bool name="config_show_volumeRockerWake">true</bool>
 </resources>
