@@ -335,6 +335,9 @@ on post-fs-data
     mkdir /data/misc/sensor 0775 system system
     mkdir /data/tmp 0775 system system
     mkdir /data/etc/sensor 0777 system system
+	
+	# Workaround to fix PowerDaemon
+	symlink  /data/tmp /tmp
 
 on boot
     setprop ro.media.gst.enabled 1
