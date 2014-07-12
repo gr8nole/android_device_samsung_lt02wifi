@@ -1,0 +1,172 @@
+import init.pxa988.usb.rc
+import init_bsp.pxa988.tel.rc
+
+on early-init
+    export EXTERNAL_STORAGE /mnt/sdcard
+    mkdir /mnt/sdcard 0000 system system
+    mkdir /mnt/external_sdcard 0000 system system
+    # for backwards compatibility
+    symlink /mnt/sdcard /sdcard
+
+on init
+    setprop ro.board.platform mrvl
+
+    write /proc/sys/vm/legacy_va_layout 1
+    # for control LCD backlight
+    chown system system /sys/class/backlight/emei-bl/brightness
+
+    # for sd8xxx wifi and bluetooth power
+    chown system system /sys/class/rfkill/rfkill0/state
+    chown system system /sys/class/rfkill/rfkill1/state
+
+    #cpu
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+
+    #hotplug
+    chown system system /sys/devices/system/cpu/hotplug/bound_freq
+    chown system system /sys/devices/system/cpu/hotplug/load_h0
+    chown system system /sys/devices/system/cpu/hotplug/load_l1
+    chown system system /sys/devices/system/cpu/hotplug/lock
+    chown system system /sys/devices/system/cpu/cpu1/online
+    chmod 0644 /sys/devices/system/cpu/hotplug/bound_freq
+    chmod 0644 /sys/devices/system/cpu/hotplug/load_h0
+    chmod 0644 /sys/devices/system/cpu/hotplug/load_l1
+    chmod 0644 /sys/devices/system/cpu/hotplug/lock
+    chmod 0644 /sys/devices/system/cpu/cpu1/online
+
+    #ddr
+    chown system system /sys/class/devfreq/devfreq-ddr/polling_interval
+    chown system system /sys/class/devfreq/devfreq-ddr/min_freq
+    chown system system /sys/class/devfreq/devfreq-ddr/max_freq
+    chown system system /sys/class/devfreq/devfreq-ddr/governor
+    chown system system /sys/class/devfreq/devfreq-ddr/cur_freq
+
+    #vpu
+    chown system system /sys/class/devfreq/devfreq-vpu/userspace/set_freq
+    chown system system /sys/class/devfreq/devfreq-vpu/min_freq
+    chown system system /sys/class/devfreq/devfreq-vpu/max_freq
+
+    #keypad wakeup source
+    chown system system /sys/devices/platform/pxa27x-keypad/power/wakeup
+
+    #keypad wakeup source
+    chown system system /proc/driver/pm800_headset
+
+    #lcd for dip channel
+    chmod 664 /sys/devices/platform/pxa168-fb.0/lcd    
+    chown system system /sys/devices/platform/pxa168-fb.0/lcd
+
+    #cpu&ddr for dip channel
+    chmod 664 /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/min_freq
+    chmod 664 /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/max_freq
+    chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/min_freq
+    chown system system /sys/devices/platform/devfreq-ddr/devfreq/devfreq-ddr/max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+
+    #pm runtime
+    chown system system /sys/bus/i2c/devices/4-0048/power/control
+    chown system system /sys/devices/platform/pxa168-fb.0/power/control
+    chown system system /sys/devices/platform/pxa168-fb.1/power/control
+    chown system system /sys/devices/platform/mrvl8xxx_fm.0/power/control
+    chown system system /sys/devices/platform/Sec_BattMonitor/power/control
+
+    #autosleep
+    chown system system /sys/power/autosleep
+    chown system system /sys/class/power_supply/battery/device/calibration
+
+    chown system system /proc/driver/sirf
+
+    chown system system /sys/class/graphics/fb0/device/vsync
+    chmod 0660 /sys/class/graphics/fb0/device/vsync
+    #GSSP device
+    chown system system /proc/driver/pcm_mfp
+    chmod 0666 /proc/driver/pcm_mfp
+
+    # master/slave
+    chown system system /proc/driver/ssp_master
+    chmod 0666 /proc/driver/ssp_master
+
+    chown system system /proc/driver/gssp_master
+    chmod 0666 /proc/driver/gssp_master
+
+    #set ap as master, codec/BT as slave
+    setprop persist.audio.apmaster 1
+    setprop persist.audio.gsspmaster 1
+    setprop persist.audio.codecmaster 0
+    setprop persist.bt.pcmmaster 0
+
+    #enable DRM service
+    setprop drm.service.enabled true
+    setprop battery.fake_ac 0
+
+on fs
+    # mount /system rw first to give the filesystem a chance to save a checkpoint
+    # mount ext4 /dev/block/mmcblk0p14 /system
+    # mount ext4 /dev/block/mmcblk0p14 /system ro remount
+
+    # mount /data by fstab to support encryption.
+    mount_all /fstab.pxa988
+
+    mount debugfs debugfs /sys/kernel/debug
+
+on post-fs
+    insmod /system/lib/modules/geu.ko
+
+    chown system system /sys/devices/platform/galcore/power/control
+    #gpu
+    chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_cur_governor
+    chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_min_freq
+    chown system system /sys/devices/platform/galcore/gpu/gpu0/gpufreq/scaling_max_freq
+
+on post-fs-data
+    setprop vold.post_fs_data_done 1
+    setprop wifi.interface wlan0
+    setprop wifidirect.interface p2p0
+
+    # create folder to save wifi/bt config files with mac address, and calibrate files
+    mkdir /data/misc/wireless 0771 system system
+    # create filesystem for wifi & dhcp
+    mkdir /data/misc/wifi 0771 wifi wifi
+    mkdir /data/misc/wifi/sockets 0771 wifi wifi
+    mkdir /data/misc/wifi/wapi_certs 0775 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    chown dhcp dhcp /data/misc/dhcp
+
+    # for blcr
+    #mkdir /data/blcr 0775 system system
+
+on boot
+    setprop ro.media.gst.enabled 1
+    setprop service.camera.af 1
+
+    # enable bluetooth dial-up network
+    setprop  ro.bluetooth.dun true
+
+on property:persist.sys.dump.enable=1
+    write /sys/power/panic CRASH_ENABLE
+
+on property:persist.sys.tools.enable=1
+    mkdir /data/vendor
+    mount ext4 /dev/block/mmcblk0p15 /data/vendor
+    chown system system /data/vendor
+    chmod 0755 /data/vendor
+
+on property:persist.sys.tools.enable=0
+    exec /system/bin/umount /data/vendor
+
+
+
+
+
