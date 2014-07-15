@@ -1,3 +1,4 @@
+import /init_bsp.rc
 import init.pxa988.usb.rc
 
 on early-init
@@ -40,6 +41,9 @@ on init
     setprop ro.secure=0
     setprop ro.adb.secure=0
     setprop ro.debuggable=1
+	
+	# Disable SELinux for the time being
+	setenforce 0
 
     write /proc/sys/vm/legacy_va_layout 1
 

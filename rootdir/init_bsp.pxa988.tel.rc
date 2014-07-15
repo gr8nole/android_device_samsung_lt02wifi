@@ -13,7 +13,7 @@ on fs
     mkdir /NVM 0744 system system
 
     # for e2fsck bad block of /NVM partition before mount
-    check_fs /dev/block/mmcblk0p12 ext4
+    exec /system/bin/e2fsck -vy /dev/block/mmcblk0p12
 
     mount ext4 /dev/block/mmcblk0p12 /NVM nosuid nodev nodelalloc,noauto_da_alloc
     chown system system /NVM
@@ -59,11 +59,6 @@ on property:init.svc.atcmdsrv=stopped
 on property:init.svc.vcm=stopped
     exec /system/bin/telmon vcm
 
-service simal /system/bin/simal
-    class main
-    user wifi
-    group system
-
 service ipv6-network-manager /system/bin/ipv6-network-manager
     class main
 
@@ -103,7 +98,7 @@ service vcm /system/bin/vcm
     oneshot
     group system
 
-service marvelltel /system/bin/tel_launch.sh
+service marvelltel /system/bin/tel_launch_no_gui.sh
     class main
     oneshot
     group system

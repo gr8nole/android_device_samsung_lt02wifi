@@ -41,7 +41,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/init.recovery.pxa988.rc:root/init.recovery.pxa988.rc \
     $(LOCAL_PATH)/rootdir/init.pxa988.rc:root/init.pxa988.rc \
     $(LOCAL_PATH)/rootdir/init.pxa988.usb.rc:root/init.pxa988.usb.rc \
-    $(LOCAL_PATH)/rootdir/init.pxa988.tel.rc:root/init.pxa988.tel.rc
+    $(LOCAL_PATH)/rootdir/init.pxa988.tel.rc:root/init.pxa988.tel.rc \
+    $(LOCAL_PATH)/rootdir/init_bsp.rc:root/init_bsp.rc \
+    $(LOCAL_PATH)/rootdir/init_bsp.pxa988.rc:root/init_bsp.pxa988.rc \
+    $(LOCAL_PATH)/rootdir/init_bsp.pxa988.tel.rc:root/init_bsp.pxa988.tel.rc
 
 # Init files
 PRODUCT_PACKAGES += \
