@@ -29,93 +29,93 @@ on fs
     chmod 0775 /data/Mlog
 
 on post-fs-data
-    # for simal
-    mkdir /data/misc/simal 0775 wifi system
-    chmod 0775 /data/misc/simal
+    #~ # for simal
+    #~ mkdir /data/misc/simal 0775 wifi system
+    #~ chmod 0775 /data/misc/simal
 
-    # for Phone plugin
-    mkdir /data/misc/phone 0775 media media
-    chown media media /data/misc/phone
-    chmod 0775 /data/misc/phone
+    #~ # for Phone plugin
+    #~ mkdir /data/misc/phone 0775 media media
+    #~ chown media media /data/misc/phone
+    #~ chmod 0775 /data/misc/phone
 
-on property:persist.radio.mainlog.enable=1
-    start mainlog
+#~ on property:persist.radio.mainlog.enable=1
+    #~ start mainlog
 
-on property:persist.radio.mainlog.enable=0
-    stop mainlog
+#~ on property:persist.radio.mainlog.enable=0
+    #~ stop mainlog
 
-on property:persist.radio.radiolog.enable=1
-    start radiolog
+#~ on property:persist.radio.radiolog.enable=1
+    #~ start radiolog
 
-on property:persist.radio.radiolog.enable=0
-    stop radiolog
+#~ on property:persist.radio.radiolog.enable=0
+    #~ stop radiolog
 
-on property:init.svc.nvm=stopped
-    exec /system/bin/telmon nvm
+#~ on property:init.svc.nvm=stopped
+    #~ exec /system/bin/telmon nvm
 
-on property:init.svc.atcmdsrv=stopped
-    exec /system/bin/telmon atcmdsrv
+#~ on property:init.svc.atcmdsrv=stopped
+    #~ exec /system/bin/telmon atcmdsrv
 
-on property:init.svc.vcm=stopped
-    exec /system/bin/telmon vcm
+#~ on property:init.svc.vcm=stopped
+    #~ exec /system/bin/telmon vcm
 
-service simal /system/bin/simal
-    class main
-    user wifi
-    group system
+#~ service simal /system/bin/simal
+    #~ class main
+    #~ user wifi
+    #~ group system
 
-service ipv6-network-manager /system/bin/ipv6-network-manager
-    class main
+#~ service ipv6-network-manager /system/bin/ipv6-network-manager
+    #~ class main
 
-service eeh /system/bin/eeh -M yes
-    disabled
-    group system
+#~ service eeh /system/bin/eeh -M yes
+    #~ disabled
+    #~ group system
 
-service nvm /system/bin/nvm
-    disabled
-    oneshot
-    group system
+#~ service nvm /system/bin/nvm
+    #~ disabled
+    #~ oneshot
+    #~ group system
 
-service nvm-aponly /system/bin/nvm -A
-    disabled
-    oneshot
-    group system
+#~ service nvm-aponly /system/bin/nvm -A
+    #~ disabled
+    #~ oneshot
+    #~ group system
 
-service diag /system/bin/diag
-    disabled
-    group system
+#~ service diag /system/bin/diag
+    #~ disabled
+    #~ group system
 
-service diag-aponly /system/bin/diag -A
-    disabled
-    group system
+#~ service diag-aponly /system/bin/diag -A
+    #~ disabled
+    #~ group system
 
-service atcmdsrv /system/bin/atcmdsrv
-    disabled
-    oneshot
-    group system
+#~ service atcmdsrv /system/bin/atcmdsrv
+    #~ disabled
+    #~ oneshot
+    #~ group system
 
-service atcmdsrv-aponly /system/bin/atcmdsrv -M yes -A
-    disabled
-    group system
+#~ service atcmdsrv-aponly /system/bin/atcmdsrv -M yes -A
+    #~ disabled
+    #~ group system
 
-service vcm /system/bin/vcm
-    disabled
-    oneshot
-    group system
+#~ service vcm /system/bin/vcm
+    #~ disabled
+    #~ oneshot
+    #~ group system
 
-service marvelltel /system/bin/tel_launch.sh
-    class main
-    oneshot
-    group system
+#~ service marvelltel /system/bin/tel_launch.sh
+    #~ class main
+    #~ oneshot
+    #~ group system
 
-service mainlog /system/bin/logcat -f /data/Mlog/main -v threadtime -n 5 -r 1024
-    user radio
-    group system log
-    disabled
-    oneshot
+#~ service mainlog /system/bin/logcat -f /data/Mlog/main -v threadtime -n 5 -r 1024
+    #~ user radio
+    #~ group system log
+    #~ disabled
+    #~ oneshot
 
-service radiolog /system/bin/logcat -f /data/Mlog/radio -v threadtime -n 5 -b radio -r 1024
-    user radio
-    group system log
-    disabled
-    oneshot
+#~ service radiolog /system/bin/logcat -f /data/Mlog/radio -v threadtime -n 5 -b radio -r 1024
+    #~ user radio
+    #~ group system log
+    #~ disabled
+    #~ oneshot
