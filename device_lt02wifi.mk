@@ -1,24 +1,46 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
+# The gps config appropriate for this device
+$(call inherit-product, device/common/gps/gps_us_supl.mk)
+
 $(call inherit-product-if-exists, vendor/samsung/lt02wifi/lt02wifi-vendor.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/samsung/lt02wifi/overlay
 
+# Set wifi-only before it's set by generic_no_telephony.mk
+PRODUCT_PROPERTY_OVERRIDES += \
+        ro.carrier=wifi-only
+		
 $(call inherit-product, build/target/product/full_base.mk)
 
 PRODUCT_CHARACTERISTICS := tablet
 
-# Screen size is "large", density is "mdpi", need "hdpi" for extra drawables
-PRODUCT_AAPT_CONFIG := large mdpi hdpi
+# Enable higher-res drawables while keeping mdpi as primary source
+PRODUCT_AAPT_CONFIG := large mdpi hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
+PRODUCT_LOCALES += mdpi
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 # Set property overrides
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.zygote.disable_gl_preload=true \
+    ro.cm.hardware.cabc=/sys/class/mdnie/mdnie/cabc \
+    ro.bq.gpu_to_cpu_unsupported=1 \
+    wifi.interface=wlan0 \
+    wifi.softap.interface=wlan0 \
+    wifi.supplicant_scan_interval=30 \
     dalvik.vm.heapsize=128m \
     ro.carrier=wifi-only
+	
+DEFAULT_PROPERTY_OVERRIDES += \
+    ro.secure=0 \
+    ro.allow.mock.location=1 \
+    ro.debuggable=1 \
+    persist.service.adb.enable=1 \
+    persist.sys.usb.config=mtp,adb \
+    sys.disable_ext_animation=1
 
 # Charger
 PRODUCT_PACKAGES += \

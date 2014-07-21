@@ -4,6 +4,8 @@
 # rotation setting in potrait mode.
 ro.sf.hwrotation=270
 
+ro.config.used_hw_vsync=0
+
 ro.carrier=wifi-only
 
 # System property for Default Brightness

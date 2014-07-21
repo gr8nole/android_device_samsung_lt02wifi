@@ -18,6 +18,10 @@
 USE_CAMERA_STUB := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 
+# MRVL hardware
+BOARD_USES_MRVL_HARDWARE := true
+
+# Architecture
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 TARGET_ARCH := arm
@@ -31,6 +35,8 @@ TARGET_CPU_SMP := true
 TARGET_BOOTLOADER_BOARD_NAME := PXA988
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
+# Flags
+COMMON_GLOBAL_CFLAGS += -DMRVL_HARDWARE
 COMMON_GLOBAL_CFLAGS += -DNO_RGBX_8888
 TARGET_GLOBAL_CFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
@@ -121,9 +127,39 @@ TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # Audio
 BOARD_USES_ALSA_AUDIO := true
+COMMON_GLOBAL_CFLAGS += -DMR0_AUDIO_BLOB -DMR1_AUDIO_BLOB
+BOARD_HAVE_PRE_KITKAT_AUDIO_BLOB := true
 
 # Webkit
 ENABLE_WEBGL := true
+BOARD_USE_SKIA_LCDTEXT := true
+BOARD_NEEDS_CUTILS_LOG := true
+BOARD_HAVE_PIXEL_FORMAT_INFO := true
+BOARD_USES_HWCOMPOSER := true
+
+TARGET_HARDWARE_3D := false
+
+BOARD_ENABLE_MULTI_DISPLAYS := true
+
+#Generic config
+MRVL_ION := true
+
+# The above lines are almost the same as Brownstone.
+# MMP3 Special
+BOARD_USE_VIVANTE_GRALLOC := true
+HDMI_SUPPORT_3D := true
+
+#BOARD_GFX_DRIVER_VERSION=4x
+
+#DYNAMIC_ALSA_PARAMS := true
+
+#Enable marvell interface in SurfaceFlinger
+MRVL_INTERFACE_ANIMATION := true
+#ENABLE_HWC_GC_PATH := true
+
+#Launch DMS in SurfaceFlinger process
+MRVL_LAUNCH_DMS_IN_SURFACEFLINGER := true
+
 TARGET_FORCE_CPU_UPLOAD := true
 
 # Bluetooth
@@ -132,11 +168,24 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/lt02wifi/bluetooth
 BOARD_HAVE_BLUETOOTH_BCM := true
 USE_BLUETOOTH_SAP := false
 
+# Needed for blobs
+#COMMON_GLOBAL_CFLAGS += -DMR0_CAMERA_BLOB
+COMMON_GLOBAL_CFLAGS += -DBOARD_EGL_NEEDS_LEGACY_FB
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+COMMON_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+
 # Charging mode
 #BOARD_CHARGER_RES := device/samsung/lt02wifi/res/charger
 BOARD_CHARGING_MODE_BOOTING_LPM := true
 
 TARGET_SPECIFIC_HEADER_PATH := device/samsung/lt02wifi/include
+
+# Sec_touchscreen
+INPUT_TOUCH_DRIVER := TOUCH_LT
+
+# Compatibility with pre-kitkat Sensor HALs
+SENSORS_NEED_SETRATE_ON_ENABLE := true
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
